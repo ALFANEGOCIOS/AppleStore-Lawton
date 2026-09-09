@@ -2,854 +2,793 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>AppleStore Lawton | Administración</title>
-
     <meta
         name="description"
-        content="Panel de administración de AppleStore Lawton"
+        content="AppleStore Lawton - Productos Apple nuevos y usados."
+    >
+
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
+    <title>AppleStore Lawton | Productos Apple</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
     >
 
     <link
         rel="stylesheet"
-        href="./css/admin.css?v=1003"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css?v=1003"
     >
 </head>
 
-<body class="admin-body">
+<body>
 
-    <!-- =========================
-         LOGIN
-    ========================== -->
+<header class="navbar">
 
-    <section class="admin-login" id="adminLogin">
+    <div class="container navbar-container">
 
-        <div class="admin-login-card">
+        <a href="#inicio" class="logo">
+            AppleStore Lawton
+        </a>
 
-            <div class="admin-logo">
-                AppleStore
-                <span>Lawton</span>
-            </div>
+        <nav class="desktop-nav">
 
-            <p class="admin-eyebrow">
-                PANEL DE ADMINISTRACIÓN
-            </p>
+            <a href="#inicio">Inicio</a>
 
-            <h1>
-                Iniciar sesión
-            </h1>
+            <a href="#categorias">Categorías</a>
 
-            <p class="admin-login-description">
-                Accede para administrar los productos de la tienda.
-            </p>
+            <a href="#productos">Productos</a>
 
-            <form id="loginForm">
+            <a href="#nosotros">Nosotros</a>
 
-                <div class="admin-form-group">
+            <a href="#contacto">Contacto</a>
 
-                    <label for="adminEmail">
-                        Correo electrónico
-                    </label>
+        </nav>
 
-                    <input
-                        type="email"
-                        id="adminEmail"
-                        placeholder="admin@email.com"
-                        autocomplete="email"
-                        required
-                    >
+        <div class="navbar-actions">
 
-                </div>
+            <button
+                class="nav-icon-button"
+                id="searchButton"
+                aria-label="Buscar"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
 
-                <div class="admin-form-group">
+            <button
+                class="nav-icon-button cart-button"
+                id="cartButton"
+                aria-label="Abrir bolsa"
+            >
+                <i class="fa-solid fa-bag-shopping"></i>
 
-                    <label for="adminPassword">
-                        Contraseña
-                    </label>
-
-                    <input
-                        type="password"
-                        id="adminPassword"
-                        placeholder="••••••••"
-                        autocomplete="current-password"
-                        required
-                    >
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="admin-button admin-button-primary admin-button-full"
-                    id="loginButton"
+                <span
+                    class="cart-count"
+                    id="cartCount"
                 >
-                    <span>Iniciar sesión</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
+                    0
+                </span>
+            </button>
 
-                <p
-                    class="admin-error"
-                    id="loginError"
-                ></p>
-
-            </form>
+            <button
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                aria-label="Abrir menú"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
         </div>
 
-    </section>
+    </div>
 
-
-    <!-- =========================
-         PANEL ADMINISTRACIÓN
-    ========================== -->
 
     <div
-        class="admin-panel"
-        id="adminPanel"
-        style="display: none;"
+        class="search-container"
+        id="searchContainer"
     >
 
-        <!-- =========================
-             SIDEBAR
-        ========================== -->
+        <div class="container search-inner">
 
-        <aside class="admin-sidebar">
+            <div class="search-input-wrapper">
 
-            <div class="admin-sidebar-header">
+                <i class="fa-solid fa-magnifying-glass"></i>
 
-                <div class="admin-sidebar-brand">
-                    AppleStore
-                    <span>Lawton</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar productos..."
+                    autocomplete="off"
+                >
+
+                <button
+                    id="closeSearch"
+                    aria-label="Cerrar búsqueda"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="mobile-nav"
+        id="mobileNav"
+    >
+
+        <a href="#inicio">Inicio</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#productos">Productos</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+<section
+    class="hero"
+    id="inicio"
+>
+
+    <div class="container hero-container">
+
+        <div class="hero-content">
+
+            <span class="hero-eyebrow">
+                APPLESTORE LAWTON
+            </span>
+
+            <h1>
+                Todo lo que buscas.
+                <span>Todo Apple.</span>
+            </h1>
+
+            <p>
+                Productos Apple nuevos y usados,
+                seleccionados para ti.
+            </p>
+
+            <div class="hero-actions">
+
+                <a
+                    href="#productos"
+                    class="button button-primary"
+                >
+                    Ver productos
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a
+                    href="#contacto"
+                    class="button button-secondary"
+                >
+                    Contactar
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-image">
+
+            <div class="hero-image-glow"></div>
+
+            <img
+                src="https://images.unsplash.com/photo-1592286927505-2fd8b4e5e6f7?auto=format&fit=crop&w=1000&q=85"
+                alt="iPhone"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="categories-section"
+    id="categorias"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-eyebrow">
+                EXPLORA
+            </span>
+
+            <h2>
+                Encuentra tu próximo Apple.
+            </h2>
+
+        </div>
+
+
+        <div class="categories-grid">
+
+            <button
+                class="category-card"
+                data-category="iPhone"
+            >
+                <div class="category-icon">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
 
-                <p class="admin-sidebar-subtitle">
-                    Administración
+                <span>iPhone</span>
+            </button>
+
+
+            <button
+                class="category-card"
+                data-category="iPad"
+            >
+                <div class="category-icon">
+                    <i class="fa-solid fa-tablet-screen-button"></i>
+                </div>
+
+                <span>iPad</span>
+            </button>
+
+
+            <button
+                class="category-card"
+                data-category="Mac"
+            >
+                <div class="category-icon">
+                    <i class="fa-solid fa-laptop"></i>
+                </div>
+
+                <span>Mac</span>
+            </button>
+
+
+            <button
+                class="category-card"
+                data-category="Apple Watch"
+            >
+                <div class="category-icon">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+
+                <span>Apple Watch</span>
+            </button>
+
+
+            <button
+                class="category-card"
+                data-category="AirPods"
+            >
+                <div class="category-icon">
+                    <i class="fa-solid fa-headphones"></i>
+                </div>
+
+                <span>AirPods</span>
+            </button>
+
+
+            <button
+                class="category-card"
+                data-category="Accesorios"
+            >
+                <div class="category-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <span>Accesorios</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="products-section"
+    id="productos"
+>
+
+    <div class="container">
+
+        <div class="products-header">
+
+            <div class="section-heading">
+
+                <span class="section-eyebrow">
+                    PRODUCTOS
+                </span>
+
+                <h2>
+                    Lo último disponible.
+                </h2>
+
+            </div>
+
+
+            <div class="product-filters">
+
+                <button
+                    class="filter-button active"
+                    data-filter="Todos"
+                >
+                    Todos
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="iPhone"
+                >
+                    iPhone
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="iPad"
+                >
+                    iPad
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="Mac"
+                >
+                    Mac
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="Apple Watch"
+                >
+                    Watch
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="AirPods"
+                >
+                    AirPods
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="Accesorios"
+                >
+                    Accesorios
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="products-grid"
+            id="productsGrid"
+        >
+
+            <div class="products-loading">
+
+                <div class="loading-spinner"></div>
+
+                <p>
+                    Cargando productos...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="no-products"
+            id="noProducts"
+            style="display:none;"
+        >
+
+            <div class="no-products-icon">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+
+            <h3>
+                No encontramos productos.
+            </h3>
+
+            <p>
+                Prueba con otra categoría o búsqueda.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="about-section"
+    id="nosotros"
+>
+
+    <div class="container about-container">
+
+        <div class="about-content">
+
+            <span class="section-eyebrow">
+                SOBRE NOSOTROS
+            </span>
+
+            <h2>
+                Apple, sin complicaciones.
+            </h2>
+
+            <p>
+                En AppleStore Lawton nos enfocamos
+                exclusivamente en productos Apple.
+                Desde accesorios hasta equipos,
+                nuevos o usados, buscamos ofrecer
+                opciones confiables y accesibles.
+            </p>
+
+            <p>
+                Cada producto disponible aparece
+                directamente en nuestra tienda con
+                su precio y stock actualizado.
+            </p>
+
+        </div>
+
+
+        <div class="about-features">
+
+            <div class="about-feature">
+
+                <div class="about-feature-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Productos seleccionados
+                    </h3>
+
+                    <p>
+                        Opciones cuidadosamente seleccionadas.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-feature">
+
+                <div class="about-feature-icon">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Precios claros
+                    </h3>
+
+                    <p>
+                        Consulta el precio antes de contactar.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-feature">
+
+                <div class="about-feature-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Stock actualizado
+                    </h3>
+
+                    <p>
+                        Consulta qué productos están disponibles.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="contact-section"
+    id="contacto"
+>
+
+    <div class="container">
+
+        <div class="contact-card">
+
+            <div class="contact-content">
+
+                <span class="section-eyebrow">
+                    ¿TIENES ALGUNA DUDA?
+                </span>
+
+                <h2>
+                    Hablemos.
+                </h2>
+
+                <p>
+                    Escríbenos para consultar
+                    disponibilidad, precios o
+                    cualquier producto Apple.
                 </p>
 
             </div>
 
 
-            <nav class="admin-navigation">
+            <a
+                href="https://wa.me/5358751220"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="whatsapp-button"
+            >
+                <i class="fa-brands fa-whatsapp"></i>
+                WhatsApp
+            </a>
 
-                <button
-                    type="button"
-                    class="admin-nav active"
-                    data-view-button="dashboard"
-                >
-                    <span class="admin-nav-icon">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </span>
+        </div>
 
-                    <span>
-                        Dashboard
-                    </span>
-                </button>
+    </div>
 
+</section>
 
-                <button
-                    type="button"
-                    class="admin-nav"
-                    data-view-button="products"
-                >
-                    <span class="admin-nav-icon">
-                        <i class="fa-solid fa-box"></i>
-                    </span>
-
-                    <span>
-                        Productos
-                    </span>
-                </button>
+</main>
 
 
-                <button
-                    type="button"
-                    class="admin-nav"
-                    data-view-button="add-product"
-                >
-                    <span class="admin-nav-icon">
-                        <i class="fa-solid fa-plus"></i>
-                    </span>
+<footer class="footer">
 
-                    <span>
-                        Agregar producto
-                    </span>
-                </button>
+    <div class="container">
 
-            </nav>
+        <div class="footer-main">
 
+            <div class="footer-brand">
 
-            <div class="admin-sidebar-footer">
+                <span class="logo">
+                    AppleStore Lawton
+                </span>
 
-                <a
-                    href="index.html"
-                    target="_blank"
-                    class="admin-sidebar-link"
-                >
-                    <i class="fa-solid fa-store"></i>
-                    Ver tienda
-                </a>
-
-                <button
-                    type="button"
-                    class="admin-logout"
-                    id="logoutButton"
-                >
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Cerrar sesión
-                </button>
+                <p>
+                    Productos Apple nuevos y usados.
+                </p>
 
             </div>
 
-        </aside>
+
+            <div class="footer-links">
+
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#contacto">Contacto</a>
+
+            </div>
+
+        </div>
 
 
-        <!-- =========================
-             CONTENIDO PRINCIPAL
-        ========================== -->
+        <div class="footer-bottom">
 
-        <main class="admin-main">
+            <p>
+                © 2026 AppleStore Lawton.
+                Todos los derechos reservados.
+            </p>
 
-
-            <!-- =========================
-                 DASHBOARD
-            ========================== -->
-
-            <section
-                class="admin-view active"
-                id="dashboardView"
+            <a
+                href="https://alfanegocios.github.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="by-alfa"
             >
+                By ALFA NEGOCIOS
+            </a>
 
-                <div class="admin-page-header">
+        </div>
 
-                    <div>
-                        <p class="admin-eyebrow">
-                            RESUMEN
-                        </p>
+    </div>
 
-                        <h1>
-                            Dashboard
-                        </h1>
+</footer>
 
-                        <p class="admin-page-description">
-                            Gestiona rápidamente el inventario de AppleStore Lawton.
-                        </p>
-                    </div>
 
-                </div>
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+></div>
 
 
-                <div class="admin-stats-grid">
+<aside
+    class="cart-drawer"
+    id="cartDrawer"
+>
 
-                    <div class="admin-stat-card">
+    <div class="cart-header">
 
-                        <div class="admin-stat-icon">
-                            <i class="fa-solid fa-box"></i>
-                        </div>
+        <h2>
+            Tu bolsa
+        </h2>
 
-                        <div>
-                            <span class="admin-stat-label">
-                                Productos
-                            </span>
-
-                            <strong
-                                class="admin-stat-value"
-                                id="totalProducts"
-                            >
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            <i class="fa-solid fa-cubes"></i>
-                        </div>
-
-                        <div>
-                            <span class="admin-stat-label">
-                                Unidades en stock
-                            </span>
-
-                            <strong
-                                class="admin-stat-value"
-                                id="totalStock"
-                            >
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            <i class="fa-solid fa-circle-check"></i>
-                        </div>
-
-                        <div>
-                            <span class="admin-stat-label">
-                                Productos disponibles
-                            </span>
-
-                            <strong
-                                class="admin-stat-value"
-                                id="availableProducts"
-                            >
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-
-                        <div>
-                            <span class="admin-stat-label">
-                                Stock bajo
-                            </span>
-
-                            <strong
-                                class="admin-stat-value"
-                                id="lowStockProducts"
-                            >
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="admin-card">
-
-                    <div class="admin-card-header">
-
-                        <div>
-                            <h2>
-                                Acciones rápidas
-                            </h2>
-
-                            <p>
-                                Accede rápidamente a las funciones principales.
-                            </p>
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-quick-actions">
-
-                        <button
-                            type="button"
-                            class="admin-quick-action"
-                            data-view-button="add-product"
-                        >
-                            <i class="fa-solid fa-plus"></i>
-
-                            <span>
-                                Agregar producto
-                            </span>
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="admin-quick-action"
-                            data-view-button="products"
-                        >
-                            <i class="fa-solid fa-box"></i>
-
-                            <span>
-                                Ver productos
-                            </span>
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =========================
-                 PRODUCTOS
-            ========================== -->
-
-            <section
-                class="admin-view"
-                id="productsView"
-            >
-
-                <div class="admin-page-header">
-
-                    <div>
-                        <p class="admin-eyebrow">
-                            INVENTARIO
-                        </p>
-
-                        <h1>
-                            Productos
-                        </h1>
-
-                        <p class="admin-page-description">
-                            Administra todos los productos disponibles en la tienda.
-                        </p>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="admin-button admin-button-primary"
-                        data-view-button="add-product"
-                    >
-                        <i class="fa-solid fa-plus"></i>
-                        Agregar producto
-                    </button>
-
-                </div>
-
-
-                <div class="admin-card">
-
-                    <div class="admin-toolbar">
-
-                        <div class="admin-search-wrapper">
-
-                            <i class="fa-solid fa-magnifying-glass admin-search-icon"></i>
-
-                            <input
-                                type="search"
-                                id="adminProductSearch"
-                                placeholder="Buscar producto..."
-                                autocomplete="off"
-                            >
-
-                        </div>
-
-
-                        <select
-                            id="adminCategoryFilter"
-                            class="admin-select"
-                        >
-                            <option value="all">
-                                Todas las categorías
-                            </option>
-
-                            <option value="iPhone">
-                                iPhone
-                            </option>
-
-                            <option value="iPad">
-                                iPad
-                            </option>
-
-                            <option value="Mac">
-                                Mac
-                            </option>
-
-                            <option value="Apple Watch">
-                                Apple Watch
-                            </option>
-
-                            <option value="AirPods">
-                                AirPods
-                            </option>
-
-                            <option value="Accesorios">
-                                Accesorios
-                            </option>
-
-                            <option value="iPod">
-                                iPod
-                            </option>
-
-                            <option value="Otros">
-                                Otros
-                            </option>
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <div class="admin-table-card">
-
-                    <div class="admin-products-table-wrapper">
-
-                        <table class="admin-products-table">
-
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Categoría</th>
-                                    <th>Precio</th>
-                                    <th>Condición</th>
-                                    <th>Stock</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="adminProductsTable">
-
-                                <tr>
-                                    <td
-                                        colspan="6"
-                                        class="admin-table-loading"
-                                    >
-                                        Cargando productos...
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =========================
-                 AGREGAR / EDITAR PRODUCTO
-            ========================== -->
-
-            <section
-                class="admin-view"
-                id="addProductView"
-            >
-
-                <div class="admin-page-header">
-
-                    <div>
-                        <p class="admin-eyebrow">
-                            INVENTARIO
-                        </p>
-
-                        <h1 id="productFormTitle">
-                            Agregar producto
-                        </h1>
-
-                        <p class="admin-page-description">
-                            Añade un nuevo producto al catálogo de AppleStore Lawton.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="admin-card">
-
-                    <form
-                        class="product-form"
-                        id="productForm"
-                    >
-
-                        <div class="admin-form-grid">
-
-
-                            <!-- NOMBRE -->
-
-                            <div class="admin-form-group">
-
-                                <label for="productName">
-                                    Nombre del producto
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="productName"
-                                    placeholder="Ej. iPhone 15 Pro"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- PRECIO -->
-
-                            <div class="admin-form-group">
-
-                                <label for="productPrice">
-                                    Precio
-                                </label>
-
-                                <div class="admin-price-input">
-
-                                    <input
-                                        type="number"
-                                        id="productPrice"
-                                        placeholder="0.00"
-                                        min="0"
-                                        step="0.01"
-                                        required
-                                    >
-
-                                    <span>
-                                        USD
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- CATEGORÍA -->
-
-                            <div class="admin-form-group">
-
-                                <label for="productCategory">
-                                    Categoría
-                                </label>
-
-                                <select
-                                    id="productCategory"
-                                    required
-                                >
-                                    <option value="">
-                                        Seleccionar categoría
-                                    </option>
-
-                                    <option value="iPhone">
-                                        iPhone
-                                    </option>
-
-                                    <option value="iPad">
-                                        iPad
-                                    </option>
-
-                                    <option value="Mac">
-                                        Mac
-                                    </option>
-
-                                    <option value="Apple Watch">
-                                        Apple Watch
-                                    </option>
-
-                                    <option value="AirPods">
-                                        AirPods
-                                    </option>
-
-                                    <option value="Accesorios">
-                                        Accesorios
-                                    </option>
-
-                                    <option value="iPod">
-                                        iPod
-                                    </option>
-
-                                    <option value="Otros">
-                                        Otros
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- CONDICIÓN -->
-
-                            <div class="admin-form-group">
-
-                                <label for="productCondition">
-                                    Condición
-                                </label>
-
-                                <select
-                                    id="productCondition"
-                                    required
-                                >
-                                    <option value="Nuevo">
-                                        Nuevo
-                                    </option>
-
-                                    <option value="Usado">
-                                        Usado
-                                    </option>
-                                </select>
-
-                            </div>
-
-
-                            <!-- STOCK -->
-
-                            <div class="admin-form-group">
-
-                                <label for="productStock">
-                                    Stock
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="productStock"
-                                    placeholder="0"
-                                    min="0"
-                                    step="1"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- DESCRIPCIÓN -->
-
-                            <div class="admin-form-group admin-form-full">
-
-                                <label for="productDescription">
-                                    Descripción
-                                </label>
-
-                                <textarea
-                                    id="productDescription"
-                                    rows="5"
-                                    placeholder="Descripción breve del producto..."
-                                    required
-                                ></textarea>
-
-                            </div>
-
-
-                            <!-- IMAGEN -->
-
-                            <div class="admin-form-group admin-form-full">
-
-                                <label>
-                                    Imagen del producto
-                                </label>
-
-                                <div class="image-upload-card">
-
-                                    <div
-                                        class="image-preview"
-                                        id="imagePreview"
-                                    >
-
-                                        <div class="image-preview-placeholder">
-
-                                            <i class="fa-regular fa-image"></i>
-
-                                            <span>
-                                                Selecciona una imagen WebP
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <input
-                                        type="file"
-                                        id="productImage"
-                                        accept="image/webp,.webp"
-                                        hidden
-                                    >
-
-
-                                    <button
-                                        type="button"
-                                        class="admin-upload-button"
-                                        id="imageUploadButton"
-                                    >
-                                        <i class="fa-solid fa-cloud-arrow-up"></i>
-
-                                        Seleccionar imagen
-                                    </button>
-
-
-                                    <p
-                                        class="upload-name"
-                                        id="uploadName"
-                                    >
-                                        Solo imágenes .webp
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MENSAJE -->
-
-                        <div
-                            class="admin-form-message"
-                            id="productFormMessage"
-                        ></div>
-
-
-                        <!-- BOTONES -->
-
-                        <div class="admin-form-actions">
-
-                            <button
-                                type="button"
-                                class="admin-button admin-button-secondary"
-                                data-view-button="products"
-                            >
-                                Cancelar
-                            </button>
-
-                            <button
-                                type="submit"
-                                class="admin-button admin-button-primary"
-                                id="saveProductButton"
-                            >
-                                <i class="fa-solid fa-check"></i>
-
-                                Guardar producto
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </section>
-
-        </main>
+        <button
+            class="close-button"
+            id="closeCart"
+            aria-label="Cerrar"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
 
     </div>
 
 
-    <!-- =========================
-         SUPABASE
-    ========================== -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-    <!-- =========================
-         ICONOS
-    ========================== -->
-
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-    ></script>
+    <div
+        class="cart-items"
+        id="cartItems"
+    ></div>
 
 
-    <!-- =========================
-         ADMIN JS
-    ========================== -->
+    <div class="cart-footer">
 
-    <script src="./js/admin.js?v=1003"></script>
+        <div class="cart-total">
+
+            <span>Total</span>
+
+            <strong id="cartTotal">
+                $0.00
+            </strong>
+
+        </div>
+
+        <button
+            class="button button-primary cart-checkout"
+            id="checkoutButton"
+        >
+            Contactar por WhatsApp
+        </button>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="modal-overlay"
+    id="productModal"
+>
+
+    <div class="product-modal">
+
+        <button
+            class="modal-close"
+            id="closeProductModal"
+            aria-label="Cerrar"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+
+        <div class="modal-product-content">
+
+            <div class="modal-product-image">
+
+                <img
+                    id="modalProductImage"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="modal-product-info">
+
+                <span
+                    class="product-category"
+                    id="modalProductCategory"
+                ></span>
+
+                <h2 id="modalProductName"></h2>
+
+                <p
+                    class="modal-description"
+                    id="modalProductDescription"
+                ></p>
+
+                <div class="modal-product-status">
+
+                    <span
+                        class="product-condition"
+                        id="modalProductCondition"
+                    ></span>
+
+                    <span
+                        class="product-stock"
+                        id="modalProductStock"
+                    ></span>
+
+                </div>
+
+                <div
+                    class="modal-price"
+                    id="modalProductPrice"
+                ></div>
+
+                <button
+                    class="button button-primary modal-add-button"
+                    id="modalAddCart"
+                >
+                    Añadir a la bolsa
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/script.js?v=1003"></script>
 
 </body>
 </html>
