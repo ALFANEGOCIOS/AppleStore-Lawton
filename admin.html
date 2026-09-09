@@ -1,307 +1,412 @@
-<!DOCTYPE html><html lang="es"><head>
-    <meta charset="UTF-8"><meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta
-    name="theme-color"
-    content="#ffffff"
->
+    <title>AppleStore Lawton | Administración</title>
 
-<title>AppleStore Lawton | Administración</title>
+    <meta
+        name="description"
+        content="Panel de administración de AppleStore Lawton"
+    >
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="stylesheet"
+        href="./css/admin.css?v=1003"
+    >
+</head>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
->
+<body class="admin-body">
 
-<!-- Admin CSS -->
-<link rel="stylesheet" href="./css/admin.css?v=999">
+    <!-- =========================
+         LOGIN
+    ========================== -->
 
-</head><body class="admin-body"><!-- =====================================
-     LOGIN
-====================================== -->
+    <section class="admin-login" id="adminLogin">
 
-<section
-    class="admin-login"
-    id="adminLogin"
->
+        <div class="admin-login-card">
 
-    <div class="admin-login-card">
-
-        <div class="admin-logo">
-            
-        </div>
-
-        <span class="admin-eyebrow">
-            APPLESTORE LAWTON
-        </span>
-
-        <h1>
-            Administración
-        </h1>
-
-        <p class="admin-login-description">
-            Inicia sesión para administrar los productos.
-        </p>
-
-        <form id="loginForm">
-
-            <div class="admin-form-group">
-
-                <label for="email">
-                    Correo electrónico
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="admin@email.com"
-                    autocomplete="email"
-                    required
-                >
-
-            </div>
-
-            <div class="admin-form-group">
-
-                <label for="password">
-                    Contraseña
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="••••••••"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
-
-            <button
-                type="submit"
-                class="admin-button admin-button-primary admin-button-full"
-            >
-                Iniciar sesión
-            </button>
-
-            <p
-                class="admin-error"
-                id="loginError"
-            ></p>
-
-        </form>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================
-     ADMIN PANEL
-====================================== -->
-
-<div
-    class="admin-panel"
-    id="adminPanel"
-    style="display: none;"
->
-
-    <!-- =================================
-         SIDEBAR
-    ================================== -->
-
-    <aside class="admin-sidebar">
-
-        <div class="admin-sidebar-header">
-
-            <div class="admin-sidebar-brand">
+            <div class="admin-logo">
                 AppleStore
+                <span>Lawton</span>
             </div>
 
-            <span class="admin-sidebar-subtitle">
-                Lawton
-            </span>
+            <p class="admin-eyebrow">
+                PANEL DE ADMINISTRACIÓN
+            </p>
 
-        </div>
+            <h1>
+                Iniciar sesión
+            </h1>
 
+            <p class="admin-login-description">
+                Accede para administrar los productos de la tienda.
+            </p>
 
-        <nav class="admin-navigation">
+            <form id="loginForm">
 
-            <button
-                type="button"
-                class="admin-nav active"
-                data-view="dashboard"
-            >
-                <span class="admin-nav-icon">⌂</span>
-                <span>Dashboard</span>
-            </button>
+                <div class="admin-form-group">
 
-            <button
-                type="button"
-                class="admin-nav"
-                data-view="products"
-            >
-                <span class="admin-nav-icon">□</span>
-                <span>Productos</span>
-            </button>
+                    <label for="adminEmail">
+                        Correo electrónico
+                    </label>
 
-            <button
-                type="button"
-                class="admin-nav"
-                data-view="add-product"
-            >
-                <span class="admin-nav-icon">＋</span>
-                <span>Agregar producto</span>
-            </button>
-
-        </nav>
-
-
-        <div class="admin-sidebar-footer">
-
-            <button
-                type="button"
-                class="admin-logout"
-                id="logoutButton"
-            >
-                <span>↪</span>
-                Cerrar sesión
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =================================
-         MAIN
-    ================================== -->
-
-    <main class="admin-main">
-
-        <!-- =================================
-             DASHBOARD
-        ================================== -->
-
-        <section
-            class="admin-view active"
-            id="dashboardView"
-        >
-
-            <div class="admin-page-header">
-
-                <div>
-
-                    <span class="admin-eyebrow">
-                        APPLESTORE LAWTON
-                    </span>
-
-                    <h1>
-                        Dashboard
-                    </h1>
-
-                    <p class="admin-page-description">
-                        Resumen general de tu tienda.
-                    </p>
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        placeholder="admin@email.com"
+                        autocomplete="email"
+                        required
+                    >
 
                 </div>
 
+                <div class="admin-form-group">
+
+                    <label for="adminPassword">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="admin-button admin-button-primary admin-button-full"
+                    id="loginButton"
+                >
+                    <span>Iniciar sesión</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <p
+                    class="admin-error"
+                    id="loginError"
+                ></p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PANEL ADMINISTRACIÓN
+    ========================== -->
+
+    <div
+        class="admin-panel"
+        id="adminPanel"
+        style="display: none;"
+    >
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-sidebar-header">
+
+                <div class="admin-sidebar-brand">
+                    AppleStore
+                    <span>Lawton</span>
+                </div>
+
+                <p class="admin-sidebar-subtitle">
+                    Administración
+                </p>
+
             </div>
 
 
-            <!-- STATS -->
+            <nav class="admin-navigation">
 
-            <div class="admin-stats-grid">
+                <button
+                    type="button"
+                    class="admin-nav active"
+                    data-view-button="dashboard"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
 
-                <div class="admin-stat-card">
+                    <span>
+                        Dashboard
+                    </span>
+                </button>
 
-                    <span class="admin-stat-label">
+
+                <button
+                    type="button"
+                    class="admin-nav"
+                    data-view-button="products"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </span>
+
+                    <span>
                         Productos
                     </span>
-
-                    <strong
-                        class="admin-stat-value"
-                        id="totalProducts"
-                    >
-                        0
-                    </strong>
-
-                </div>
+                </button>
 
 
-                <div class="admin-stat-card">
-
-                    <span class="admin-stat-label">
-                        En stock
+                <button
+                    type="button"
+                    class="admin-nav"
+                    data-view-button="add-product"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-plus"></i>
                     </span>
 
-                    <strong
-                        class="admin-stat-value"
-                        id="availableProducts"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="admin-stat-card">
-
-                    <span class="admin-stat-label">
-                        Últimas unidades
+                    <span>
+                        Agregar producto
                     </span>
+                </button>
 
-                    <strong
-                        class="admin-stat-value"
-                        id="lowStockProducts"
-                    >
-                        0
-                    </strong>
-
-                </div>
+            </nav>
 
 
-                <div class="admin-stat-card">
+            <div class="admin-sidebar-footer">
 
-                    <span class="admin-stat-label">
-                        Agotados
-                    </span>
+                <a
+                    href="index.html"
+                    target="_blank"
+                    class="admin-sidebar-link"
+                >
+                    <i class="fa-solid fa-store"></i>
+                    Ver tienda
+                </a>
 
-                    <strong
-                        class="admin-stat-value"
-                        id="outOfStockProducts"
-                    >
-                        0
-                    </strong>
-
-                </div>
+                <button
+                    type="button"
+                    class="admin-logout"
+                    id="logoutButton"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
 
             </div>
 
+        </aside>
 
-            <!-- INVENTORY SUMMARY -->
 
-            <div class="admin-card">
+        <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
 
-                <div class="admin-card-header">
+        <main class="admin-main">
+
+
+            <!-- =========================
+                 DASHBOARD
+            ========================== -->
+
+            <section
+                class="admin-view active"
+                id="dashboardView"
+            >
+
+                <div class="admin-page-header">
 
                     <div>
-
-                        <h2>
-                            Inventario
-                        </h2>
-
-                        <p>
-                            Resumen de productos registrados.
+                        <p class="admin-eyebrow">
+                            RESUMEN
                         </p>
 
+                        <h1>
+                            Dashboard
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Gestiona rápidamente el inventario de AppleStore Lawton.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-stats-grid">
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Productos
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="totalProducts"
+                            >
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Unidades en stock
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="totalStock"
+                            >
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Productos disponibles
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="availableProducts"
+                            >
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Stock bajo
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="lowStockProducts"
+                            >
+                                0
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card">
+
+                    <div class="admin-card-header">
+
+                        <div>
+                            <h2>
+                                Acciones rápidas
+                            </h2>
+
+                            <p>
+                                Accede rápidamente a las funciones principales.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-quick-actions">
+
+                        <button
+                            type="button"
+                            class="admin-quick-action"
+                            data-view-button="add-product"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+
+                            <span>
+                                Agregar producto
+                            </span>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="admin-quick-action"
+                            data-view-button="products"
+                        >
+                            <i class="fa-solid fa-box"></i>
+
+                            <span>
+                                Ver productos
+                            </span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 PRODUCTOS
+            ========================== -->
+
+            <section
+                class="admin-view"
+                id="productsView"
+            >
+
+                <div class="admin-page-header">
+
+                    <div>
+                        <p class="admin-eyebrow">
+                            INVENTARIO
+                        </p>
+
+                        <h1>
+                            Productos
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Administra todos los productos disponibles en la tienda.
+                        </p>
                     </div>
 
                     <button
@@ -309,480 +414,442 @@
                         class="admin-button admin-button-primary"
                         data-view-button="add-product"
                     >
-                        + Agregar producto
+                        <i class="fa-solid fa-plus"></i>
+                        Agregar producto
                     </button>
 
                 </div>
 
-            </div>
-
-        </section>
-
-
-        <!-- =================================
-             PRODUCTS
-        ================================== -->
-
-        <section
-            class="admin-view"
-            id="productsView"
-        >
-
-            <div class="admin-page-header">
-
-                <div>
-
-                    <span class="admin-eyebrow">
-                        INVENTARIO
-                    </span>
-
-                    <h1>
-                        Productos
-                    </h1>
-
-                    <p class="admin-page-description">
-                        Administra todos los productos de la tienda.
-                    </p>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="admin-button admin-button-primary"
-                    data-view-button="add-product"
-                >
-                    + Agregar producto
-                </button>
-
-            </div>
-
-
-            <!-- TOOLBAR -->
-
-            <div class="admin-toolbar">
-
-                <div class="admin-search-wrapper">
-
-                    <span class="admin-search-icon">
-                        ⌕
-                    </span>
-
-                    <input
-                        type="search"
-                        id="adminSearch"
-                        placeholder="Buscar producto..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <select id="adminCategoryFilter">
-
-                    <option value="">
-                        Todas las categorías
-                    </option>
-
-                    <option value="iPhone">
-                        iPhone
-                    </option>
-
-                    <option value="iPad">
-                        iPad
-                    </option>
-
-                    <option value="Mac">
-                        Mac
-                    </option>
-
-                    <option value="Apple Watch">
-                        Apple Watch
-                    </option>
-
-                    <option value="AirPods">
-                        AirPods
-                    </option>
-
-                    <option value="Accesorios">
-                        Accesorios
-                    </option>
-
-                    <option value="iPod">
-                        iPod
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TABLE -->
-
-            <div class="admin-table-card">
-
-                <div class="admin-products-table-wrapper">
-
-                    <table class="admin-products-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Producto
-                                </th>
-
-                                <th>
-                                    Categoría
-                                </th>
-
-                                <th>
-                                    Estado
-                                </th>
-
-                                <th>
-                                    Precio
-                                </th>
-
-                                <th>
-                                    Stock
-                                </th>
-
-                                <th>
-                                    Acciones
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="adminProductsTable">
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================
-             ADD PRODUCT
-        ================================== -->
-
-        <section
-            class="admin-view"
-            id="addProductView"
-        >
-
-            <div class="admin-page-header">
-
-                <div>
-
-                    <span class="admin-eyebrow">
-                        INVENTARIO
-                    </span>
-
-                    <h1>
-                        Agregar producto
-                    </h1>
-
-                    <p class="admin-page-description">
-                        Añade un nuevo producto al inventario.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <form
-                class="product-form"
-                id="productForm"
-            >
-
-                <!-- IMAGE -->
-
-                <div class="admin-card image-upload-card">
-
-                    <div class="admin-card-header">
-
-                        <div>
-
-                            <h2>
-                                Imagen del producto
-                            </h2>
-
-                            <p>
-                                Selecciona una imagen WebP desde tu dispositivo.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        class="image-preview"
-                        id="imagePreview"
-                    >
-
-                        <span>
-                            
-                        </span>
-
-                    </div>
-
-
-                    <label
-                        class="admin-upload-button"
-                        for="productImage"
-                    >
-
-                        Seleccionar imagen
-
-                        <input
-                            type="file"
-                            id="productImage"
-                            accept="image/webp,.webp"
-                            hidden
-                            required
-                        >
-
-                    </label>
-
-
-                    <p
-                        class="upload-name"
-                        id="uploadName"
-                    ></p>
-
-                </div>
-
-
-                <!-- PRODUCT DATA -->
 
                 <div class="admin-card">
 
-                    <div class="admin-card-header">
+                    <div class="admin-toolbar">
 
-                        <div>
+                        <div class="admin-search-wrapper">
 
-                            <h2>
-                                Información del producto
-                            </h2>
-
-                            <p>
-                                Introduce los datos que aparecerán en la tienda.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-form-grid">
-
-                        <!-- NAME -->
-
-                        <div class="admin-form-group admin-form-full">
-
-                            <label for="productName">
-                                Nombre
-                            </label>
+                            <i class="fa-solid fa-magnifying-glass admin-search-icon"></i>
 
                             <input
-                                type="text"
-                                id="productName"
-                                placeholder="Ej. iPhone 13 128GB"
-                                required
+                                type="search"
+                                id="adminProductSearch"
+                                placeholder="Buscar producto..."
+                                autocomplete="off"
                             >
 
                         </div>
 
 
-                        <!-- DESCRIPTION -->
-
-                        <div class="admin-form-group admin-form-full">
-
-                            <label for="productDescription">
-                                Descripción breve
-                            </label>
-
-                            <textarea
-                                id="productDescription"
-                                rows="4"
-                                placeholder="Describe brevemente el producto..."
-                                required
-                            ></textarea>
-
-                        </div>
-
-
-                        <!-- PRICE -->
-
-                        <div class="admin-form-group">
-
-                            <label for="productPrice">
-                                Precio USD
-                            </label>
-
-                            <input
-                                type="number"
-                                id="productPrice"
-                                min="0"
-                                step="0.01"
-                                placeholder="420"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- STOCK -->
-
-                        <div class="admin-form-group">
-
-                            <label for="productStock">
-                                Stock
-                            </label>
-
-                            <input
-                                type="number"
-                                id="productStock"
-                                min="0"
-                                step="1"
-                                placeholder="1"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- CATEGORY -->
-
-                        <div class="admin-form-group">
-
-                            <label for="productCategory">
-                                Categoría
-                            </label>
-
-                            <select
-                                id="productCategory"
-                                required
-                            >
-
-                                <option value="">
-                                    Seleccionar
-                                </option>
-
-                                <option value="iPhone">
-                                    iPhone
-                                </option>
-
-                                <option value="iPad">
-                                    iPad
-                                </option>
-
-                                <option value="Mac">
-                                    Mac
-                                </option>
-
-                                <option value="Apple Watch">
-                                    Apple Watch
-                                </option>
-
-                                <option value="AirPods">
-                                    AirPods
-                                </option>
-
-                                <option value="Accesorios">
-                                    Accesorios
-                                </option>
-
-                                <option value="iPod">
-                                    iPod
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- CONDITION -->
-
-                        <div class="admin-form-group">
-
-                            <label for="productCondition">
-                                Estado
-                            </label>
-
-                            <select
-                                id="productCondition"
-                                required
-                            >
-
-                                <option value="Nuevo">
-                                    Nuevo
-                                </option>
-
-                                <option value="Usado">
-                                    Usado
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- ACTIONS -->
-
-                    <div class="admin-form-actions">
-
-                        <button
-                            type="button"
-                            class="admin-button admin-button-secondary"
-                            data-view-button="products"
+                        <select
+                            id="adminCategoryFilter"
+                            class="admin-select"
                         >
-                            Cancelar
-                        </button>
+                            <option value="all">
+                                Todas las categorías
+                            </option>
 
-                        <button
-                            type="submit"
-                            class="admin-button admin-button-primary"
-                        >
-                            Guardar producto
-                        </button>
+                            <option value="iPhone">
+                                iPhone
+                            </option>
+
+                            <option value="iPad">
+                                iPad
+                            </option>
+
+                            <option value="Mac">
+                                Mac
+                            </option>
+
+                            <option value="Apple Watch">
+                                Apple Watch
+                            </option>
+
+                            <option value="AirPods">
+                                AirPods
+                            </option>
+
+                            <option value="Accesorios">
+                                Accesorios
+                            </option>
+
+                            <option value="iPod">
+                                iPod
+                            </option>
+
+                            <option value="Otros">
+                                Otros
+                            </option>
+                        </select>
 
                     </div>
-
-
-                    <p
-                        class="admin-form-message"
-                        id="productFormMessage"
-                    ></p>
 
                 </div>
 
-            </form>
 
-        </section>
+                <div class="admin-table-card">
 
-    </main>
+                    <div class="admin-products-table-wrapper">
 
-</div>
+                        <table class="admin-products-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Condición</th>
+                                    <th>Stock</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="adminProductsTable">
+
+                                <tr>
+                                    <td
+                                        colspan="6"
+                                        class="admin-table-loading"
+                                    >
+                                        Cargando productos...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
 
 
-<!-- SUPABASE -->
+            <!-- =========================
+                 AGREGAR / EDITAR PRODUCTO
+            ========================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            <section
+                class="admin-view"
+                id="addProductView"
+            >
 
-<!-- ADMIN JS -->
+                <div class="admin-page-header">
 
-<script src="js/admin.js"></script>
+                    <div>
+                        <p class="admin-eyebrow">
+                            INVENTARIO
+                        </p>
 
-</body></html>
+                        <h1 id="productFormTitle">
+                            Agregar producto
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Añade un nuevo producto al catálogo de AppleStore Lawton.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card">
+
+                    <form
+                        class="product-form"
+                        id="productForm"
+                    >
+
+                        <div class="admin-form-grid">
+
+
+                            <!-- NOMBRE -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productName">
+                                    Nombre del producto
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="productName"
+                                    placeholder="Ej. iPhone 15 Pro"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- PRECIO -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productPrice">
+                                    Precio
+                                </label>
+
+                                <div class="admin-price-input">
+
+                                    <input
+                                        type="number"
+                                        id="productPrice"
+                                        placeholder="0.00"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                    >
+
+                                    <span>
+                                        USD
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CATEGORÍA -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productCategory">
+                                    Categoría
+                                </label>
+
+                                <select
+                                    id="productCategory"
+                                    required
+                                >
+                                    <option value="">
+                                        Seleccionar categoría
+                                    </option>
+
+                                    <option value="iPhone">
+                                        iPhone
+                                    </option>
+
+                                    <option value="iPad">
+                                        iPad
+                                    </option>
+
+                                    <option value="Mac">
+                                        Mac
+                                    </option>
+
+                                    <option value="Apple Watch">
+                                        Apple Watch
+                                    </option>
+
+                                    <option value="AirPods">
+                                        AirPods
+                                    </option>
+
+                                    <option value="Accesorios">
+                                        Accesorios
+                                    </option>
+
+                                    <option value="iPod">
+                                        iPod
+                                    </option>
+
+                                    <option value="Otros">
+                                        Otros
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- CONDICIÓN -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productCondition">
+                                    Condición
+                                </label>
+
+                                <select
+                                    id="productCondition"
+                                    required
+                                >
+                                    <option value="Nuevo">
+                                        Nuevo
+                                    </option>
+
+                                    <option value="Usado">
+                                        Usado
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <!-- STOCK -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productStock">
+                                    Stock
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="productStock"
+                                    placeholder="0"
+                                    min="0"
+                                    step="1"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- DESCRIPCIÓN -->
+
+                            <div class="admin-form-group admin-form-full">
+
+                                <label for="productDescription">
+                                    Descripción
+                                </label>
+
+                                <textarea
+                                    id="productDescription"
+                                    rows="5"
+                                    placeholder="Descripción breve del producto..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- IMAGEN -->
+
+                            <div class="admin-form-group admin-form-full">
+
+                                <label>
+                                    Imagen del producto
+                                </label>
+
+                                <div class="image-upload-card">
+
+                                    <div
+                                        class="image-preview"
+                                        id="imagePreview"
+                                    >
+
+                                        <div class="image-preview-placeholder">
+
+                                            <i class="fa-regular fa-image"></i>
+
+                                            <span>
+                                                Selecciona una imagen WebP
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <input
+                                        type="file"
+                                        id="productImage"
+                                        accept="image/webp,.webp"
+                                        hidden
+                                    >
+
+
+                                    <button
+                                        type="button"
+                                        class="admin-upload-button"
+                                        id="imageUploadButton"
+                                    >
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                                        Seleccionar imagen
+                                    </button>
+
+
+                                    <p
+                                        class="upload-name"
+                                        id="uploadName"
+                                    >
+                                        Solo imágenes .webp
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MENSAJE -->
+
+                        <div
+                            class="admin-form-message"
+                            id="productFormMessage"
+                        ></div>
+
+
+                        <!-- BOTONES -->
+
+                        <div class="admin-form-actions">
+
+                            <button
+                                type="button"
+                                class="admin-button admin-button-secondary"
+                                data-view-button="products"
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="admin-button admin-button-primary"
+                                id="saveProductButton"
+                            >
+                                <i class="fa-solid fa-check"></i>
+
+                                Guardar producto
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================
+         SUPABASE
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================
+         ICONOS
+    ========================== -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+
+    <!-- =========================
+         ADMIN JS
+    ========================== -->
+
+    <script src="./js/admin.js?v=1003"></script>
+
+</body>
+</html>
