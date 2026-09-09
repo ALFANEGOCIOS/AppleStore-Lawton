@@ -1,7 +1,7 @@
 /* =========================================================
    APPLESTORE LAWTON
    ADMIN PANEL
-========================================================= */
+   ========================================================= */
 
 
 /* =========================================================
@@ -47,6 +47,15 @@ const loginForm =
 const loginError =
     document.getElementById("loginError");
 
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const imageInput =
+    document.getElementById("productImage");
+
+const productForm =
+    document.getElementById("productForm");
+
 
 /* =========================================================
    CHECK SESSION
@@ -54,18 +63,34 @@ const loginError =
 
 async function checkSession() {
 
-    const {
-        data: {
-            session
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            console.error("Error comprobando sesión:", error);
+            showLogin();
+            return;
         }
-    } = await supabaseClient.auth.getSession();
 
 
-    if (session) {
+        if (data.session) {
 
-        showAdminPanel();
+            showAdminPanel();
 
-    } else {
+        } else {
+
+            showLogin();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
 
         showLogin();
 
@@ -73,6 +98,10 @@ async function checkSession() {
 
 }
 
+
+/* =========================================================
+   SHOW LOGIN
+========================================================= */
 
 function showLogin() {
 
@@ -83,11 +112,21 @@ function showLogin() {
 }
 
 
+/* =========================================================
+   SHOW ADMIN PANEL
+========================================================= */
+
 function showAdminPanel() {
 
     loginSection.style.display = "none";
 
-    adminPanel.style.display = "flex";
+    /*
+        Importante:
+        El CSS utiliza display:grid.
+        No debemos poner display:flex aquí.
+    */
+
+    adminPanel.style.display = "grid";
 
     loadProducts();
 
@@ -106,7 +145,6 @@ loginForm.addEventListener(
 
         loginError.textContent = "";
 
-
         const email =
             document
                 .getElementById("email")
@@ -119,47 +157,104 @@ loginForm.addEventListener(
                 .value;
 
 
-        const {
-            error
-        } =
-            await supabaseClient.auth.signInWithPassword({
-                email,
-                password
-            });
+        const button =
+            loginForm.querySelector(
+                'button[type="submit"]'
+            );
 
 
-        if (error) {
+        button.disabled = true;
+
+        button.textContent =
+            "Iniciando sesión...";
+
+
+        try {
+
+            const {
+                error
+            } =
+                await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+
+            if (error) {
+
+                loginError.textContent =
+                    getAuthErrorMessage(error);
+
+                return;
+
+            }
+
+
+            showAdminPanel();
+
+
+        } catch (error) {
+
+            console.error(error);
 
             loginError.textContent =
-                error.message;
+                "No se pudo iniciar sesión.";
 
-            return;
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Iniciar sesión";
 
         }
-
-
-        showAdminPanel();
 
     }
 );
 
 
 /* =========================================================
+   AUTH ERROR
+========================================================= */
+
+function getAuthErrorMessage(error) {
+
+    if (
+        error.message &&
+        error.message.toLowerCase().includes(
+            "invalid login credentials"
+        )
+    ) {
+
+        return "Correo o contraseña incorrectos.";
+
+    }
+
+
+    return error.message ||
+        "No se pudo iniciar sesión.";
+
+}
+
+
+/* =========================================================
    LOGOUT
 ========================================================= */
 
-document
-    .getElementById("logoutButton")
-    .addEventListener(
-        "click",
-        async () => {
+logoutButton.addEventListener(
+    "click",
+    async () => {
 
-            await supabaseClient.auth.signOut();
+        await supabaseClient.auth.signOut();
 
-            showLogin();
+        adminProducts = [];
 
-        }
-    );
+        editingProductId = null;
+
+        showLogin();
+
+    }
+);
 
 
 /* =========================================================
@@ -201,8 +296,24 @@ function showView(view) {
 
         });
 
+
+    /*
+        Si vamos a agregar producto como nuevo,
+        limpiamos el formulario.
+    */
+
+    if (view === "add-product" && !editingProductId) {
+
+        resetProductForm();
+
+    }
+
 }
 
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
 
 document
     .querySelectorAll("[data-view]")
@@ -222,6 +333,10 @@ document
     });
 
 
+/* =========================================================
+   INTERNAL VIEW BUTTONS
+========================================================= */
+
 document
     .querySelectorAll("[data-view-button]")
     .forEach(button => {
@@ -230,9 +345,25 @@ document
             "click",
             () => {
 
-                showView(
-                    button.dataset.viewButton
-                );
+                const view =
+                    button.dataset.viewButton;
+
+
+                /*
+                    Si vamos a crear un producto nuevo,
+                    limpiamos el formulario.
+                */
+
+                if (
+                    view === "add-product"
+                ) {
+
+                    resetProductForm();
+
+                }
+
+
+                showView(view);
 
             }
         );
@@ -246,32 +377,71 @@ document
 
 async function loadProducts() {
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("products")
-            .select("*")
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
+    try {
+
+        /*
+            Primero intentamos ordenar por created_at.
+        */
+
+        let result =
+            await supabaseClient
+                .from("products")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        /*
+            Si created_at no existe,
+            intentamos cargar sin ordenar.
+        */
+
+        if (result.error) {
+
+            console.warn(
+                "Primer intento falló. Intentando sin created_at...",
+                result.error
             );
 
 
-    if (error) {
+            result =
+                await supabaseClient
+                    .from("products")
+                    .select("*");
 
-        console.error(error);
+        }
 
-        /*
-            Mientras la tabla no exista,
-            el panel mostrará el error en consola.
 
-            Después de ejecutar el SQL,
-            esto empezará a cargar productos reales.
-        */
+        if (result.error) {
+
+            throw result.error;
+
+        }
+
+
+        adminProducts =
+            result.data || [];
+
+
+        console.table(adminProducts);
+
+
+        updateDashboard();
+
+        renderAdminProducts();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando productos:",
+            error
+        );
+
 
         adminProducts = [];
 
@@ -279,17 +449,7 @@ async function loadProducts() {
 
         renderAdminProducts();
 
-        return;
-
     }
-
-
-    adminProducts =
-        data || [];
-
-    updateDashboard();
-
-    renderAdminProducts();
 
 }
 
@@ -306,22 +466,31 @@ function updateDashboard() {
 
     const available =
         adminProducts.filter(
-            product => product.stock > 3
+            product =>
+                Number(product.stock) > 3
         ).length;
 
 
     const lowStock =
         adminProducts.filter(
-            product =>
-                product.stock > 0 &&
-                product.stock <= 3
+            product => {
+
+                const stock =
+                    Number(product.stock);
+
+                return (
+                    stock > 0 &&
+                    stock <= 3
+                );
+
+            }
         ).length;
 
 
     const outOfStock =
         adminProducts.filter(
             product =>
-                product.stock <= 0
+                Number(product.stock) <= 0
         ).length;
 
 
@@ -348,7 +517,7 @@ function updateDashboard() {
 
 
 /* =========================================================
-   RENDER TABLE
+   RENDER PRODUCTS TABLE
 ========================================================= */
 
 function renderAdminProducts() {
@@ -376,11 +545,15 @@ function renderAdminProducts() {
     const filtered =
         adminProducts.filter(product => {
 
+            const name =
+                String(
+                    product.name || ""
+                ).toLowerCase();
+
+
             const matchesSearch =
                 !search ||
-                product.name
-                    .toLowerCase()
-                    .includes(search);
+                name.includes(search);
 
 
             const matchesCategory =
@@ -399,34 +572,112 @@ function renderAdminProducts() {
     table.innerHTML = "";
 
 
+    if (!filtered.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td
+                    colspan="6"
+                    class="admin-empty"
+                >
+                    No hay productos para mostrar.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
     filtered.forEach(product => {
 
         const row =
             document.createElement("tr");
 
 
-        const stockClass =
-            product.stock <= 0
-                ? "stock-out"
-                : product.stock <= 3
-                    ? "stock-low"
-                    : "stock-available";
+        const stock =
+            Number(product.stock) || 0;
+
+
+        let stockClass =
+            "stock-available";
+
+        let stockText =
+            "OK";
+
+
+        if (stock <= 0) {
+
+            stockClass =
+                "stock-out";
+
+            stockText =
+                "Agotado";
+
+        } else if (stock <= 3) {
+
+            stockClass =
+                "stock-low";
+
+            stockText =
+                "Bajo";
+
+        }
+
+
+        const conditionClass =
+            String(product.condition)
+                .toLowerCase() === "usado"
+                ? "condition-used"
+                : "condition-new";
+
+
+        const imageUrl =
+            product.image_url ||
+            "";
+
+
+        const price =
+            Number(product.price) || 0;
 
 
         row.innerHTML = `
 
             <td>
 
-                <div class="table-product">
+                <div class="admin-product">
 
-                    <img
-                        src="${product.image_url || ""}"
-                        alt="${product.name}"
-                    >
+                    <div class="admin-product-image">
 
-                    <strong>
-                        ${product.name}
-                    </strong>
+                        ${
+                            imageUrl
+                                ? `
+                                    <img
+                                        src="${escapeHtml(imageUrl)}"
+                                        alt="${escapeHtml(product.name || "Producto")}"
+                                        loading="lazy"
+                                    >
+                                  `
+                                : `
+                                    <span></span>
+                                  `
+                        }
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="admin-product-name">
+                            ${escapeHtml(product.name || "Sin nombre")}
+                        </div>
+
+                        <div class="admin-product-category">
+                            ${escapeHtml(product.category || "Sin categoría")}
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -434,40 +685,52 @@ function renderAdminProducts() {
 
 
             <td>
-                ${product.category}
+                ${escapeHtml(product.category || "-")}
             </td>
 
 
             <td>
-                ${product.condition}
-            </td>
-
-
-            <td>
-                $${Number(product.price).toFixed(2)}
-            </td>
-
-
-            <td>
-
-                <input
-                    class="stock-input"
-                    type="number"
-                    min="0"
-                    value="${product.stock}"
-                    data-stock="${product.id}"
-                >
 
                 <span
-                    class="${stockClass}"
-                    style="font-size:11px;"
+                    class="condition-badge ${conditionClass}"
                 >
-                    ${product.stock <= 0
-                        ? "Agotado"
-                        : product.stock <= 3
-                            ? "Bajo"
-                            : "OK"}
+                    ${escapeHtml(product.condition || "-")}
                 </span>
+
+            </td>
+
+
+            <td>
+                $${price.toFixed(2)}
+            </td>
+
+
+            <td>
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                    "
+                >
+
+                    <input
+                        class="stock-input"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="${stock}"
+                        data-stock="${escapeHtml(String(product.id))}"
+                    >
+
+                    <span
+                        class="stock-badge ${stockClass}"
+                    >
+                        ${stockText}
+                    </span>
+
+                </div>
 
             </td>
 
@@ -477,15 +740,18 @@ function renderAdminProducts() {
                 <div class="table-actions">
 
                     <button
+                        type="button"
                         class="table-action"
-                        data-edit="${product.id}"
+                        data-edit="${escapeHtml(String(product.id))}"
                     >
                         Editar
                     </button>
 
+
                     <button
+                        type="button"
                         class="table-action delete"
-                        data-delete="${product.id}"
+                        data-delete="${escapeHtml(String(product.id))}"
                     >
                         Eliminar
                     </button>
@@ -512,7 +778,6 @@ function renderAdminProducts() {
 ========================================================= */
 
 function bindTableEvents() {
-
 
     document
         .querySelectorAll("[data-delete]")
@@ -580,7 +845,10 @@ async function updateStock(
     stock
 ) {
 
-    if (stock < 0) {
+    if (
+        !Number.isFinite(stock) ||
+        stock < 0
+    ) {
 
         return;
 
@@ -595,7 +863,10 @@ async function updateStock(
             .update({
                 stock
             })
-            .eq("id", id);
+            .eq(
+                "id",
+                id
+            );
 
 
     if (error) {
@@ -617,14 +888,15 @@ async function updateStock(
 
 
 /* =========================================================
-   DELETE
+   DELETE PRODUCT
 ========================================================= */
 
 async function deleteProduct(id) {
 
     const product =
         adminProducts.find(
-            item => item.id === id
+            item =>
+                String(item.id) === String(id)
         );
 
 
@@ -640,29 +912,45 @@ async function deleteProduct(id) {
     if (!confirmed) return;
 
 
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("products")
-            .delete()
-            .eq("id", id);
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("products")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
 
 
-    if (error) {
+        if (error) {
 
-        alert(
-            "No se pudo eliminar el producto."
-        );
+            throw error;
+
+        }
+
+
+        /*
+            Si la eliminación fue correcta,
+            recargamos los productos.
+        */
+
+        await loadProducts();
+
+
+    } catch (error) {
 
         console.error(error);
 
-        return;
+        alert(
+            error.message ||
+            "No se pudo eliminar el producto."
+        );
 
     }
-
-
-    await loadProducts();
 
 }
 
@@ -675,44 +963,52 @@ function editProduct(id) {
 
     const product =
         adminProducts.find(
-            item => item.id === id
+            item =>
+                String(item.id) === String(id)
         );
 
 
     if (!product) return;
 
 
-    editingProductId = id;
+    editingProductId =
+        product.id;
 
 
     document.getElementById(
         "productName"
-    ).value = product.name;
+    ).value =
+        product.name || "";
 
 
     document.getElementById(
         "productDescription"
-    ).value = product.description;
+    ).value =
+        product.description || "";
 
 
     document.getElementById(
         "productPrice"
-    ).value = product.price;
+    ).value =
+        product.price || "";
 
 
     document.getElementById(
         "productStock"
-    ).value = product.stock;
+    ).value =
+        product.stock || 0;
 
 
     document.getElementById(
         "productCategory"
-    ).value = product.category;
+    ).value =
+        product.category || "";
 
 
     document.getElementById(
         "productCondition"
-    ).value = product.condition;
+    ).value =
+        product.condition || "Nuevo";
 
 
     const preview =
@@ -721,20 +1017,48 @@ function editProduct(id) {
         );
 
 
-    preview.innerHTML = `
+    if (product.image_url) {
 
-        <img
-            src="${product.image_url}"
-            alt="${product.name}"
-        >
+        preview.innerHTML = `
+            <img
+                src="${escapeHtml(product.image_url)}"
+                alt="${escapeHtml(product.name || "Producto")}"
+            >
+        `;
 
-    `;
+        preview.classList.add(
+            "has-image"
+        );
+
+    } else {
+
+        preview.innerHTML =
+            "<span></span>";
+
+        preview.classList.remove(
+            "has-image"
+        );
+
+    }
 
 
     document.getElementById(
         "uploadName"
     ).textContent =
-        "Imagen actual";
+        "Imagen actual. Puedes seleccionar otra para reemplazarla.";
+
+
+    /*
+        Al editar no es obligatorio
+        seleccionar una imagen nueva.
+    */
+
+    imageInput.required = false;
+
+
+    document.getElementById(
+        "productFormMessage"
+    ).textContent = "";
 
 
     showView("add-product");
@@ -745,12 +1069,6 @@ function editProduct(id) {
 /* =========================================================
    IMAGE PREVIEW
 ========================================================= */
-
-const imageInput =
-    document.getElementById(
-        "productImage"
-    );
-
 
 imageInput.addEventListener(
     "change",
@@ -763,6 +1081,30 @@ imageInput.addEventListener(
         if (!file) return;
 
 
+        /*
+            Validar WebP.
+        */
+
+        const isWebP =
+            file.type === "image/webp" ||
+            file.name
+                .toLowerCase()
+                .endsWith(".webp");
+
+
+        if (!isWebP) {
+
+            alert(
+                "Solo se permiten imágenes WebP."
+            );
+
+            imageInput.value = "";
+
+            return;
+
+        }
+
+
         const reader =
             new FileReader();
 
@@ -770,9 +1112,13 @@ imageInput.addEventListener(
         reader.onload =
             event => {
 
-                document.getElementById(
-                    "imagePreview"
-                ).innerHTML = `
+                const preview =
+                    document.getElementById(
+                        "imagePreview"
+                    );
+
+
+                preview.innerHTML = `
 
                     <img
                         src="${event.target.result}"
@@ -780,6 +1126,11 @@ imageInput.addEventListener(
                     >
 
                 `;
+
+
+                preview.classList.add(
+                    "has-image"
+                );
 
             };
 
@@ -797,20 +1148,38 @@ imageInput.addEventListener(
 
 
 /* =========================================================
-   UPLOAD IMAGE
+   UPLOAD IMAGE TO SUPABASE STORAGE
 ========================================================= */
 
 async function uploadImage(file) {
 
-    const extension =
+    if (!file) {
+
+        throw new Error(
+            "No se seleccionó ninguna imagen."
+        );
+
+    }
+
+
+    const isWebP =
+        file.type === "image/webp" ||
         file.name
-            .split(".")
-            .pop()
-            .toLowerCase();
+            .toLowerCase()
+            .endsWith(".webp");
+
+
+    if (!isWebP) {
+
+        throw new Error(
+            "La imagen debe estar en formato WebP."
+        );
+
+    }
 
 
     const fileName =
-        `${crypto.randomUUID()}.${extension}`;
+        `${crypto.randomUUID()}.webp`;
 
 
     const filePath =
@@ -828,6 +1197,7 @@ async function uploadImage(file) {
                 file,
                 {
                     cacheControl: "3600",
+                    contentType: "image/webp",
                     upsert: false
                 }
             );
@@ -835,7 +1205,14 @@ async function uploadImage(file) {
 
     if (error) {
 
-        throw error;
+        console.error(
+            "Error subiendo imagen:",
+            error
+        );
+
+        throw new Error(
+            `No se pudo subir la imagen: ${error.message}`
+        );
 
     }
 
@@ -846,7 +1223,18 @@ async function uploadImage(file) {
         supabaseClient
             .storage
             .from("product-images")
-            .getPublicUrl(filePath);
+            .getPublicUrl(
+                filePath
+            );
+
+
+    if (!data?.publicUrl) {
+
+        throw new Error(
+            "No se pudo obtener la URL pública de la imagen."
+        );
+
+    }
 
 
     return data.publicUrl;
@@ -858,231 +1246,375 @@ async function uploadImage(file) {
    SAVE PRODUCT
 ========================================================= */
 
-document
-    .getElementById("productForm")
-    .addEventListener(
-        "submit",
-        async event => {
+productForm.addEventListener(
+    "submit",
+    async event => {
 
-            event.preventDefault();
+        event.preventDefault();
 
 
-            const message =
-                document.getElementById(
-                    "productFormMessage"
+        const message =
+            document.getElementById(
+                "productFormMessage"
+            );
+
+
+        const submitButton =
+            productForm.querySelector(
+                'button[type="submit"]'
+            );
+
+
+        message.className =
+            "admin-form-message";
+
+
+        message.textContent =
+            "Guardando producto...";
+
+
+        submitButton.disabled = true;
+
+
+        try {
+
+            const name =
+                document
+                    .getElementById("productName")
+                    .value
+                    .trim();
+
+
+            const description =
+                document
+                    .getElementById("productDescription")
+                    .value
+                    .trim();
+
+
+            const price =
+                Number(
+                    document
+                        .getElementById("productPrice")
+                        .value
                 );
 
 
-            message.textContent =
-                "Guardando producto...";
-
-
-            try {
-
-                const name =
+            const stock =
+                Number(
                     document
-                        .getElementById("productName")
+                        .getElementById("productStock")
                         .value
-                        .trim();
-
-
-                const description =
-                    document
-                        .getElementById("productDescription")
-                        .value
-                        .trim();
-
-
-                const price =
-                    Number(
-                        document
-                            .getElementById("productPrice")
-                            .value
-                    );
-
-
-                const stock =
-                    Number(
-                        document
-                            .getElementById("productStock")
-                            .value
-                    );
-
-
-                const category =
-                    document
-                        .getElementById("productCategory")
-                        .value;
-
-
-                const condition =
-                    document
-                        .getElementById("productCondition")
-                        .value;
-
-
-                const file =
-                    imageInput.files[0];
-
-
-                let imageUrl = null;
-
-
-                /*
-                    Si estamos editando y no
-                    seleccionamos una imagen nueva,
-                    conservamos la existente.
-                */
-
-                if (editingProductId) {
-
-                    const existing =
-                        adminProducts.find(
-                            item =>
-                                item.id ===
-                                editingProductId
-                        );
-
-                    imageUrl =
-                        existing?.image_url ||
-                        null;
-
-                }
-
-
-                if (file) {
-
-                    imageUrl =
-                        await uploadImage(file);
-
-                }
-
-
-                if (!imageUrl) {
-
-                    throw new Error(
-                        "Debes seleccionar una imagen."
-                    );
-
-                }
-
-
-                const productData = {
-
-                    name,
-
-                    description,
-
-                    price,
-
-                    category,
-
-                    condition,
-
-                    stock,
-
-                    image_url:
-                        imageUrl
-
-                };
-
-
-                let result;
-
-
-                if (editingProductId) {
-
-                    result =
-                        await supabaseClient
-                            .from("products")
-                            .update(productData)
-                            .eq(
-                                "id",
-                                editingProductId
-                            );
-
-                } else {
-
-                    result =
-                        await supabaseClient
-                            .from("products")
-                            .insert(
-                                productData
-                            );
-
-                }
-
-
-                if (result.error) {
-
-                    throw result.error;
-
-                }
-
-
-                message.style.color =
-                    "#248a3d";
-
-
-                message.textContent =
-                    editingProductId
-                        ? "Producto actualizado correctamente."
-                        : "Producto agregado correctamente.";
-
-
-                resetProductForm();
-
-
-                await loadProducts();
-
-
-                setTimeout(
-                    () => {
-
-                        showView("products");
-
-                    },
-                    1000
                 );
 
 
-            } catch (error) {
-
-                console.error(error);
-
-                message.style.color =
-                    "#d70015";
+            const category =
+                document
+                    .getElementById("productCategory")
+                    .value;
 
 
-                message.textContent =
-                    error.message ||
-                    "Ocurrió un error.";
+            const condition =
+                document
+                    .getElementById("productCondition")
+                    .value;
+
+
+            /*
+                Validaciones.
+            */
+
+            if (!name) {
+
+                throw new Error(
+                    "Introduce el nombre del producto."
+                );
 
             }
 
+
+            if (!description) {
+
+                throw new Error(
+                    "Introduce una descripción."
+                );
+
+            }
+
+
+            if (
+                !Number.isFinite(price) ||
+                price < 0
+            ) {
+
+                throw new Error(
+                    "Introduce un precio válido."
+                );
+
+            }
+
+
+            if (
+                !Number.isInteger(stock) ||
+                stock < 0
+            ) {
+
+                throw new Error(
+                    "Introduce un stock válido."
+                );
+
+            }
+
+
+            if (!category) {
+
+                throw new Error(
+                    "Selecciona una categoría."
+                );
+
+            }
+
+
+            if (!condition) {
+
+                throw new Error(
+                    "Selecciona el estado del producto."
+                );
+
+            }
+
+
+            const file =
+                imageInput.files[0];
+
+
+            let imageUrl =
+                null;
+
+
+            /*
+                EDITANDO
+            */
+
+            if (editingProductId) {
+
+                const existing =
+                    adminProducts.find(
+                        item =>
+                            String(item.id) ===
+                            String(editingProductId)
+                    );
+
+
+                imageUrl =
+                    existing?.image_url ||
+                    null;
+
+            }
+
+
+            /*
+                Si hay una imagen nueva,
+                la subimos a Storage.
+            */
+
+            if (file) {
+
+                imageUrl =
+                    await uploadImage(file);
+
+            }
+
+
+            /*
+                Crear producto nuevo:
+                la imagen es obligatoria.
+            */
+
+            if (
+                !editingProductId &&
+                !imageUrl
+            ) {
+
+                throw new Error(
+                    "Debes seleccionar una imagen WebP."
+                );
+
+            }
+
+
+            /*
+                Incluso editando, si por alguna razón
+                no existe una imagen anterior, exigimos una nueva.
+            */
+
+            if (!imageUrl) {
+
+                throw new Error(
+                    "El producto necesita una imagen WebP."
+                );
+
+            }
+
+
+            const productData = {
+
+                name,
+
+                description,
+
+                price,
+
+                category,
+
+                condition,
+
+                stock,
+
+                image_url:
+                    imageUrl
+
+            };
+
+
+            let result;
+
+
+            /*
+                UPDATE
+            */
+
+            if (editingProductId) {
+
+                result =
+                    await supabaseClient
+                        .from("products")
+                        .update(
+                            productData
+                        )
+                        .eq(
+                            "id",
+                            editingProductId
+                        );
+
+
+            /*
+                INSERT
+            */
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("products")
+                        .insert(
+                            productData
+                        );
+
+            }
+
+
+            if (result.error) {
+
+                throw result.error;
+
+            }
+
+
+            /*
+                Éxito.
+            */
+
+            message.className =
+                "admin-form-message success";
+
+
+            message.textContent =
+                editingProductId
+                    ? "Producto actualizado correctamente."
+                    : "Producto agregado correctamente.";
+
+
+            await loadProducts();
+
+
+            /*
+                Esperamos un poco para que
+                el usuario vea el mensaje.
+            */
+
+            setTimeout(
+                () => {
+
+                    resetProductForm();
+
+                    showView("products");
+
+                },
+                900
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error guardando producto:",
+                error
+            );
+
+
+            message.className =
+                "admin-form-message error";
+
+
+            message.textContent =
+                error.message ||
+                "Ocurrió un error al guardar el producto.";
+
+
+        } finally {
+
+            submitButton.disabled = false;
+
         }
-    );
+
+    }
+);
 
 
 /* =========================================================
-   RESET FORM
+   RESET PRODUCT FORM
 ========================================================= */
 
 function resetProductForm() {
 
-    document
-        .getElementById("productForm")
-        .reset();
+    productForm.reset();
 
 
     editingProductId = null;
 
 
-    document.getElementById(
-        "imagePreview"
-    ).innerHTML = `
-        <span></span>
-    `;
+    /*
+        Al crear un producto nuevo,
+        la imagen vuelve a ser obligatoria.
+    */
+
+    imageInput.required = true;
+
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    preview.innerHTML =
+        "<span></span>";
+
+
+    preview.classList.remove(
+        "has-image"
+    );
 
 
     document.getElementById(
@@ -1090,15 +1622,22 @@ function resetProductForm() {
     ).textContent = "";
 
 
-    document.getElementById(
-        "productFormMessage"
-    ).textContent = "";
+    const message =
+        document.getElementById(
+            "productFormMessage"
+        );
+
+
+    message.textContent = "";
+
+    message.className =
+        "admin-form-message";
 
 }
 
 
 /* =========================================================
-   SEARCH / FILTER
+   SEARCH
 ========================================================= */
 
 document
@@ -1109,12 +1648,47 @@ document
     );
 
 
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
 document
     .getElementById("adminCategoryFilter")
     .addEventListener(
         "change",
         renderAdminProducts
     );
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
 
 
 /* =========================================================
