@@ -8,403 +8,670 @@
 
     <meta
         name="description"
-        content="AppleStore Lawton. Productos Apple nuevos y usados, accesorios y dispositivos."
+        content="AppleStore Lawton. Productos Apple nuevos y usados, accesorios, dispositivos y mucho más."
     >
+
+    <link rel="stylesheet" href="styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
-
-    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-<!-- =========================
-     NAVBAR
-========================= -->
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
 
-<header class="navbar">
+    <header class="navbar">
 
-    <div class="nav-container">
+        <div class="nav-container">
 
-        <a href="index.html" class="logo">
-            AppleStore <span>Lawton</span>
-        </a>
+            <a href="index.html" class="logo">
+                AppleStore <span>Lawton</span>
+            </a>
 
-        <nav class="desktop-nav">
-            <a href="#inicio">Inicio</a>
-            <a href="#productos">Productos</a>
-            <a href="#categorias">Categorías</a>
-            <a href="#nosotros">Nosotros</a>
-        </nav>
+            <nav class="desktop-nav">
 
-        <div class="nav-actions">
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#contacto">Contacto</a>
 
-            <button
-                class="icon-button"
-                id="searchButton"
-                aria-label="Buscar"
-            >
+            </nav>
+
+            <div class="nav-actions">
+
+                <button
+                    class="nav-icon-button"
+                    id="searchButton"
+                    aria-label="Buscar"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path d="M20 20l-4-4"></path>
+                    </svg>
+                </button>
+
+                <button
+                    class="nav-icon-button cart-button"
+                    id="cartButton"
+                    aria-label="Carrito"
+                >
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 4h2l2.5 12h10L21 7H6"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="18" cy="20" r="1"></circle>
+                    </svg>
+
+                    <span class="cart-count" id="cartCount">0</span>
+
+                </button>
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Abrir menú"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Buscador -->
+
+        <div class="search-container" id="searchContainer">
+
+            <div class="search-box">
+
                 <svg viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="7"></circle>
-                    <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-                </svg>
-            </button>
-
-            <button
-                class="cart-button"
-                id="cartButton"
-                aria-label="Carrito"
-            >
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 4h2l2.2 11h10.6L21 7H6"></path>
-                    <circle cx="9" cy="20" r="1"></circle>
-                    <circle cx="18" cy="20" r="1"></circle>
+                    <path d="M20 20l-4-4"></path>
                 </svg>
 
-                <span id="cartCount">0</span>
-            </button>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar productos..."
+                    autocomplete="off"
+                >
 
-            <button
-                class="mobile-menu-button"
-                id="mobileMenuButton"
-                aria-label="Abrir menú"
-            >
-                <span></span>
-                <span></span>
-            </button>
+                <button id="closeSearch">×</button>
 
-        </div>
-
-    </div>
-
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#inicio">Inicio</a>
-        <a href="#productos">Productos</a>
-        <a href="#categorias">Categorías</a>
-        <a href="#nosotros">Nosotros</a>
-    </div>
-
-</header>
-
-
-<!-- =========================
-     SEARCH OVERLAY
-========================= -->
-
-<div class="search-overlay" id="searchOverlay">
-
-    <div class="search-box">
-
-        <button
-            class="close-button"
-            id="closeSearch"
-            aria-label="Cerrar búsqueda"
-        >
-            ×
-        </button>
-
-        <p>Buscar productos</p>
-
-        <input
-            type="search"
-            id="searchInput"
-            placeholder="iPhone, Apple Watch, cargador..."
-            autocomplete="off"
-        >
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<main>
-
-<section class="hero" id="inicio">
-
-    <div class="hero-content">
-
-        <span class="eyebrow">
-            APPLESTORE LAWTON
-        </span>
-
-        <h1>
-            Tecnología Apple.
-            <span>Sin complicaciones.</span>
-        </h1>
-
-        <p>
-            Productos Apple nuevos y usados, seleccionados para ti.
-            Encuentra el equipo o accesorio que estás buscando.
-        </p>
-
-        <a href="#productos" class="primary-button">
-            Ver productos
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     CATEGORIES
-========================= -->
-
-<section class="categories-section" id="categorias">
-
-    <div class="section-heading">
-
-        <span class="eyebrow">
-            EXPLORA
-        </span>
-
-        <h2>
-            Encuentra lo que buscas.
-        </h2>
-
-    </div>
-
-    <div class="category-grid">
-
-        <button
-            class="category-card"
-            data-category="iPhone"
-        >
-            <span class="category-icon">iPhone</span>
-            <strong>iPhone</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="iPad"
-        >
-            <span class="category-icon">iPad</span>
-            <strong>iPad</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="Mac"
-        >
-            <span class="category-icon">Mac</span>
-            <strong>Mac</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="Apple Watch"
-        >
-            <span class="category-icon">Watch</span>
-            <strong>Apple Watch</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="AirPods"
-        >
-            <span class="category-icon">AirPods</span>
-            <strong>AirPods</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="Accesorios"
-        >
-            <span class="category-icon">Accessories</span>
-            <strong>Accesorios</strong>
-        </button>
-
-        <button
-            class="category-card"
-            data-category="iPod"
-        >
-            <span class="category-icon">iPod</span>
-            <strong>iPod</strong>
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     PRODUCTS
-========================= -->
-
-<section class="products-section" id="productos">
-
-    <div class="products-header">
-
-        <div>
-
-            <span class="eyebrow">
-                TIENDA
-            </span>
-
-            <h2>
-                Productos.
-            </h2>
+            </div>
 
         </div>
 
-        <div class="filters">
+        <!-- Menú móvil -->
 
-            <button
-                class="filter-button active"
-                data-filter="Todos"
-            >
-                Todos
-            </button>
+        <div class="mobile-menu" id="mobileMenu">
 
-            <button
-                class="filter-button"
-                data-filter="Nuevo"
-            >
-                Nuevos
-            </button>
-
-            <button
-                class="filter-button"
-                data-filter="Usado"
-            >
-                Usados
-            </button>
+            <a href="#inicio">Inicio</a>
+            <a href="#productos">Productos</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#contacto">Contacto</a>
 
         </div>
 
-    </div>
+    </header>
 
 
-    <div class="products-grid" id="productsGrid">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-        <!-- Los productos se cargan mediante JavaScript -->
+    <main>
 
-    </div>
+        <section class="hero" id="inicio">
 
+            <div class="hero-content">
+
+                <span class="hero-eyebrow">
+                    AppleStore Lawton
+                </span>
+
+                <h1>
+                    Todo lo que buscas.<br>
+                    <span>Apple.</span>
+                </h1>
+
+                <p>
+                    Productos Apple nuevos y usados, seleccionados
+                    para que encuentres lo que necesitas sin complicaciones.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#productos" class="btn btn-primary">
+                        Ver productos
+                    </a>
+
+                    <a href="#nosotros" class="btn btn-secondary">
+                        Conocer más
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-visual">
+
+                <div class="hero-glow"></div>
+
+                <!-- Imagen principal del móvil -->
+                <img
+                    src="https://images.unsplash.com/photo-1592286927505-2fd8b4e5e6f7?auto=format&fit=crop&w=1000&q=85"
+                    alt="iPhone"
+                    class="hero-phone"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CATEGORÍAS
+        ====================================================== -->
+
+        <section class="categories-section">
+
+            <div class="section-container">
+
+                <div class="section-heading centered">
+
+                    <span class="section-eyebrow">
+                        Explora
+                    </span>
+
+                    <h2>
+                        Encuentra tu próximo dispositivo.
+                    </h2>
+
+                </div>
+
+
+                <div class="categories-grid">
+
+                    <button
+                        class="category-card"
+                        data-category="iPhone"
+                    >
+                        <div class="category-icon">iPhone</div>
+                        <span>iPhone</span>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        data-category="iPad"
+                    >
+                        <div class="category-icon">iPad</div>
+                        <span>iPad</span>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        data-category="Mac"
+                    >
+                        <div class="category-icon">Mac</div>
+                        <span>Mac</span>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        data-category="Apple Watch"
+                    >
+                        <div class="category-icon">Watch</div>
+                        <span>Apple Watch</span>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        data-category="AirPods"
+                    >
+                        <div class="category-icon">AirPods</div>
+                        <span>AirPods</span>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        data-category="Accesorios"
+                    >
+                        <div class="category-icon">+</div>
+                        <span>Accesorios</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PRODUCTOS
+        ====================================================== -->
+
+        <section class="products-section" id="productos">
+
+            <div class="section-container">
+
+                <div class="products-header">
+
+                    <div class="section-heading">
+
+                        <span class="section-eyebrow">
+                            AppleStore Lawton
+                        </span>
+
+                        <h2>
+                            Productos destacados.
+                        </h2>
+
+                    </div>
+
+
+                    <div class="products-controls">
+
+                        <div class="category-filter">
+
+                            <button
+                                class="filter-button active"
+                                data-filter="Todos"
+                            >
+                                Todos
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="iPhone"
+                            >
+                                iPhone
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="iPad"
+                            >
+                                iPad
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="Mac"
+                            >
+                                Mac
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="Apple Watch"
+                            >
+                                Watch
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="AirPods"
+                            >
+                                AirPods
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="Accesorios"
+                            >
+                                Accesorios
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Los productos serán generados por JavaScript -->
+
+                <div
+                    class="products-grid"
+                    id="productsGrid"
+                ></div>
+
+
+                <!-- Sin productos -->
+
+                <div
+                    class="empty-products"
+                    id="emptyProducts"
+                    style="display:none;"
+                >
+
+                    <div class="empty-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        No encontramos productos.
+                    </h3>
+
+                    <p>
+                        Prueba con otra búsqueda o categoría.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BANNER
+        ====================================================== -->
+
+        <section class="feature-banner">
+
+            <div class="feature-banner-content">
+
+                <span>
+                    NUEVO Y USADO
+                </span>
+
+                <h2>
+                    Tecnología Apple<br>
+                    para todos.
+                </h2>
+
+                <p>
+                    Encuentra productos nuevos y usados
+                    cuidadosamente seleccionados.
+                </p>
+
+                <a
+                    href="#productos"
+                    class="btn btn-light"
+                >
+                    Explorar productos
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             NOSOTROS
+        ====================================================== -->
+
+        <section class="about-section" id="nosotros">
+
+            <div class="section-container">
+
+                <div class="about-grid">
+
+                    <div class="about-content">
+
+                        <span class="section-eyebrow">
+                            AppleStore Lawton
+                        </span>
+
+                        <h2>
+                            Apple sin complicaciones.
+                        </h2>
+
+                        <p>
+                            Somos una tienda especializada en productos
+                            Apple nuevos y usados. Nuestro objetivo es
+                            ofrecer productos de calidad y una experiencia
+                            de compra sencilla.
+                        </p>
+
+                        <p>
+                            Desde accesorios hasta dispositivos Apple,
+                            puedes encontrar diferentes opciones según
+                            tu presupuesto y necesidades.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-features">
+
+                        <div class="about-feature">
+
+                            <div class="feature-number">
+                                01
+                            </div>
+
+                            <div>
+                                <h3>
+                                    Productos seleccionados
+                                </h3>
+
+                                <p>
+                                    Cada producto se publica con su
+                                    información y estado correspondiente.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <div class="feature-number">
+                                02
+                            </div>
+
+                            <div>
+                                <h3>
+                                    Nuevo y usado
+                                </h3>
+
+                                <p>
+                                    Diferentes opciones para diferentes
+                                    presupuestos.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <div class="feature-number">
+                                03
+                            </div>
+
+                            <div>
+                                <h3>
+                                    Stock actualizado
+                                </h3>
+
+                                <p>
+                                    La disponibilidad de los productos
+                                    se controla desde nuestro sistema.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONTACTO
+        ====================================================== -->
+
+        <section class="contact-section" id="contacto">
+
+            <div class="contact-container">
+
+                <span class="section-eyebrow">
+                    ¿Tienes alguna pregunta?
+                </span>
+
+                <h2>
+                    Estamos para ayudarte.
+                </h2>
+
+                <p>
+                    Escríbenos para consultar disponibilidad,
+                    precios o cualquier producto que estés buscando.
+                </p>
+
+                <div class="contact-buttons">
+
+                    <a
+                        href="https://wa.me/5358751220"
+                        target="_blank"
+                        class="btn btn-primary"
+                    >
+                        WhatsApp
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer" id="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-main">
+
+                <div class="footer-brand">
+
+                    <a href="#inicio" class="logo footer-logo">
+                        AppleStore <span>Lawton</span>
+                    </a>
+
+                    <p>
+                        Productos Apple nuevos y usados.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Tienda
+                    </h4>
+
+                    <a href="#productos">
+                        Productos
+                    </a>
+
+                    <a href="#productos">
+                        Ofertas
+                    </a>
+
+                    <a href="#productos">
+                        Accesorios
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Información
+                    </h4>
+
+                    <a href="#nosotros">
+                        Nosotros
+                    </a>
+
+                    <a href="#contacto">
+                        Contacto
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Redes
+                    </h4>
+
+                    <a
+                        href="https://wa.me/5358751220"
+                        target="_blank"
+                    >
+                        WhatsApp
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <span>
+                    © 2026 AppleStore Lawton. Todos los derechos reservados.
+                </span>
+
+                <a
+                    href="https://alfanegocios.github.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="by-alfa"
+                >
+                    By ALFA NEGOCIOS
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         CARRITO
+    ====================================================== -->
 
     <div
-        class="empty-products"
-        id="emptyProducts"
-        style="display:none;"
+        class="cart-overlay"
+        id="cartOverlay"
+    ></div>
+
+
+    <aside
+        class="cart-drawer"
+        id="cartDrawer"
     >
-
-        <div class="empty-icon">
-            
-        </div>
-
-        <h3>
-            No encontramos productos.
-        </h3>
-
-        <p>
-            Prueba con otra búsqueda o categoría.
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     ABOUT
-========================= -->
-
-<section class="about-section" id="nosotros">
-
-    <div class="about-content">
-
-        <span class="eyebrow">
-            APPLESTORE LAWTON
-        </span>
-
-        <h2>
-            Tecnología que quieres.
-            <span>Sin vueltas.</span>
-        </h2>
-
-        <p>
-            Somos una tienda independiente especializada en productos
-            Apple nuevos y usados. Buscamos ofrecer productos en buen
-            estado y una experiencia sencilla para comprar.
-        </p>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<!-- =========================
-     PRODUCT MODAL
-========================= -->
-
-<div class="modal-overlay" id="productModal">
-
-    <div class="product-modal">
-
-        <button
-            class="modal-close"
-            id="closeProductModal"
-        >
-            ×
-        </button>
-
-        <div class="modal-image">
-            <img id="modalProductImage" src="" alt="">
-        </div>
-
-        <div class="modal-info">
-
-            <span
-                class="product-condition"
-                id="modalProductCondition"
-            ></span>
-
-            <h2 id="modalProductName"></h2>
-
-            <p
-                class="modal-description"
-                id="modalProductDescription"
-            ></p>
-
-            <div class="modal-price" id="modalProductPrice"></div>
-
-            <div
-                class="modal-stock"
-                id="modalProductStock"
-            ></div>
-
-            <button
-                class="primary-button full-width"
-                id="modalAddButton"
-            >
-                Añadir al carrito
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     CART
-========================= -->
-
-<div class="cart-overlay" id="cartOverlay">
-
-    <aside class="cart-panel">
 
         <div class="cart-header">
 
@@ -413,34 +680,51 @@
             </h2>
 
             <button
-                class="modal-close"
                 id="closeCart"
+                class="close-button"
             >
                 ×
             </button>
 
         </div>
 
+
         <div
             class="cart-items"
             id="cartItems"
         ></div>
 
+
         <div
             class="cart-empty"
             id="cartEmpty"
         >
-            <div></div>
-            <p>
+
+            <div class="cart-empty-icon">
+                🛒
+            </div>
+
+            <h3>
                 Tu carrito está vacío.
+            </h3>
+
+            <p>
+                Agrega algún producto para comenzar.
             </p>
+
         </div>
 
-        <div class="cart-footer">
+
+        <div
+            class="cart-footer"
+            id="cartFooter"
+        >
 
             <div class="cart-total">
 
-                <span>Total</span>
+                <span>
+                    Total
+                </span>
 
                 <strong id="cartTotal">
                     $0.00
@@ -449,7 +733,7 @@
             </div>
 
             <button
-                class="primary-button full-width"
+                class="checkout-button"
                 id="checkoutButton"
             >
                 Solicitar compra
@@ -459,72 +743,52 @@
 
     </aside>
 
-</div>
 
+    <!-- =====================================================
+         PRODUCT MODAL
+    ====================================================== -->
 
-<!-- =========================
-     TOAST
-========================= -->
+    <div
+        class="modal-overlay"
+        id="productModal"
+    >
 
-<div
-    class="toast"
-    id="toast"
->
-    Producto añadido al carrito.
-</div>
+        <div class="product-modal">
 
+            <button
+                class="modal-close"
+                id="closeProductModal"
+            >
+                ×
+            </button>
 
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <div class="footer-container">
-
-        <div class="footer-brand">
-
-            <strong>
-                AppleStore Lawton
-            </strong>
-
-            <p>
-                Productos Apple nuevos y usados.
-            </p>
-
-        </div>
-
-        <div class="footer-links">
-
-            <a href="#productos">
-                Productos
-            </a>
-
-            <a href="#categorias">
-                Categorías
-            </a>
-
-            <a href="#nosotros">
-                Nosotros
-            </a>
+            <div
+                class="modal-product-content"
+                id="modalProductContent"
+            ></div>
 
         </div>
 
     </div>
 
-    <div class="footer-bottom">
 
-        <p>
-            AppleStore Lawton es una tienda independiente y no está
-            afiliada oficialmente con Apple Inc.
-        </p>
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
 
+    <div
+        class="toast"
+        id="toast"
+    >
+        Producto agregado al carrito.
     </div>
 
-</footer>
 
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-<script src="js/app.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
