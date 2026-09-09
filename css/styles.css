@@ -490,6 +490,121 @@ a {
     font-weight: 700;
 }
 
+/* =========================================================
+   CART QUANTITY + REMOVE BUTTONS
+========================================================= */
+
+.cart-quantity-button {
+    width: 30px;
+    height: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+
+    background: var(--white);
+    color: var(--black);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition);
+}
+
+.cart-quantity-button:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+
+    transform: translateY(-1px);
+}
+
+.cart-quantity-button:active {
+    transform: scale(0.94);
+}
+
+
+/* =========================================================
+   REMOVE BUTTON
+========================================================= */
+
+.cart-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 7px;
+
+    padding: 4px 0;
+
+    border: 0;
+
+    background: transparent;
+    color: var(--gray-500);
+
+    font-size: 0.68rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition),
+        opacity var(--transition);
+}
+
+.cart-remove:hover {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   MOBILE CART BUTTONS
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .cart-quantity-button {
+        width: 27px;
+        height: 27px;
+
+        border-radius: 7px;
+
+        font-size: 0.82rem;
+    }
+
+    .cart-remove {
+        margin-top: 6px;
+
+        font-size: 0.65rem;
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .cart-quantity-button {
+        width: 25px;
+        height: 25px;
+
+        font-size: 0.78rem;
+    }
+
+    .cart-remove {
+        font-size: 0.62rem;
+    }
+}
 
 /* =========================================================
    HERO
