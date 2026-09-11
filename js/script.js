@@ -204,10 +204,56 @@ function createProductCard(product) {
 }
 
 /* =========================================================
-   AYUDAS & RENDER IPHONE SPECS (ESTILO BADGES / TAGS)
+   AYUDAS & RENDER IPHONE SPECS (COLORES Y REGLAS DINÁMICAS)
    ========================================================= */
 function isIPhone(product) {
     return String(product.category || "").trim().toLowerCase() === "iphone";
+}
+
+function getIPhoneColorStyle(colorName) {
+    if (!colorName) return "";
+    
+    const name = String(colorName).toLowerCase().trim();
+    
+    const colorMap = {
+        "negro": { bg: "#222222", text: "#ffffff" },
+        "black": { bg: "#222222", text: "#ffffff" },
+        "blanco": { bg: "#f5f5f7", text: "#1d1d1f", border: "#d2d2d7" },
+        "white": { bg: "#f5f5f7", text: "#1d1d1f", border: "#d2d2d7" },
+        "plata": { bg: "#e3e4e5", text: "#1d1d1f" },
+        "silver": { bg: "#e3e4e5", text: "#1d1d1f" },
+        "oro": { bg: "#f9e5c9", text: "#4a3b2c" },
+        "dorado": { bg: "#f9e5c9", text: "#4a3b2c" },
+        "gold": { bg: "#f9e5c9", text: "#4a3b2c" },
+        "azul": { bg: "#0071e3", text: "#ffffff" },
+        "blue": { bg: "#0071e3", text: "#ffffff" },
+        "rojo": { bg: "#e3000f", text: "#ffffff" },
+        "red": { bg: "#e3000f", text: "#ffffff" },
+        "verde": { bg: "#34c759", text: "#ffffff" },
+        "green": { bg: "#34c759", text: "#ffffff" },
+        "morado": { bg: "#af52de", text: "#ffffff" },
+        "púrpura": { bg: "#af52de", text: "#ffffff" },
+        "purple": { bg: "#af52de", text: "#ffffff" },
+        "amarillo": { bg: "#ffcc00", text: "#1d1d1f" },
+        "yellow": { bg: "#ffcc00", text: "#1d1d1f" },
+        "grafito": { bg: "#424245", text: "#ffffff" },
+        "graphite": { bg: "#424245", text: "#ffffff" },
+        "medianoche": { bg: "#1c232e", text: "#ffffff" },
+        "midnight": { bg: "#1c232e", text: "#ffffff" },
+        "blanco estelar": { bg: "#faf6f0", text: "#1d1d1f" },
+        "starlight": { bg: "#faf6f0", text: "#1d1d1f" },
+        "titanio natural": { bg: "#b8b2a7", text: "#1d1d1f" },
+        "natural titanium": { bg: "#b8b2a7", text: "#1d1d1f" },
+        "titanio desierto": { bg: "#d3b8a3", text: "#1d1d1f" },
+        "desert titanium": { bg: "#d3b8a3", text: "#1d1d1f" }
+    };
+
+    const match = colorMap[name];
+    if (match) {
+        return `background-color: ${match.bg}; color: ${match.text}; ${match.border ? `border: 1px solid ${match.border};` : 'border: none;'}`;
+    }
+    
+    return `background-color: ${name}; color: #ffffff;`;
 }
 
 function getBooleanSpec(label, value, icon) {
@@ -228,11 +274,11 @@ function getBooleanSpec(label, value, icon) {
     return { label, value: displayValue, icon, tagClass, iconSymbol };
 }
 
-function getTextSpec(label, value, icon, customTagClass = "tag-neutral") {
+function getTextSpec(label, value, icon, customTagClass = "tag-neutral", customStyle = "") {
     if (value === null || typeof value === "undefined" || String(value).trim() === "") {
         return null;
     }
-    return { label, value: String(value), icon, tagClass: customTagClass, iconSymbol: "" };
+    return { label, value: String(value), icon, tagClass: customTagClass, iconSymbol: "", style: customStyle };
 }
 
 function getBatterySpec(value) {
@@ -243,7 +289,7 @@ function getBatterySpec(value) {
     const numericValue = Number(value);
     let tagClass = "tag-info";
 
-    if (numericValue >= 85) {
+    if (numericValue >= 90) {
         tagClass = "tag-success";
     } else if (numericValue >= 75) {
         tagClass = "tag-warning";
@@ -271,8 +317,11 @@ function renderIPhoneSpecs(product) {
 
     const specs = [];
 
-    const colorSpec = getTextSpec("Color", product.color, "fa-solid fa-palette", "tag-neutral");
-    if (colorSpec) specs.push(colorSpec);
+    if (product.color) {
+        const colorStyle = getIPhoneColorStyle(product.color);
+        const colorSpec = getTextSpec("Color", product.color, "fa-solid fa-palette", "tag-custom", colorStyle);
+        if (colorSpec) specs.push(colorSpec);
+    }
 
     const storageSpec = getTextSpec("Almacenamiento", product.almacenamiento, "fa-solid fa-hard-drive", "tag-info");
     if (storageSpec) specs.push(storageSpec);
@@ -284,11 +333,7 @@ function renderIPhoneSpecs(product) {
     specs.push(getBooleanSpec("Libre", product.libre_fabrica, "fa-solid fa-unlock"));
     specs.push(getBooleanSpec("Face ID", product.face_id, "fa-solid fa-face-smile"));
     specs.push(getBooleanSpec("True Tone", product.true_tone, "fa-solid fa-sun"));
-
-    const garantiaSpec = getBooleanSpec("Garantía", product.garantia, "fa-solid fa-shield-halved");
-    if (product.garantia === true) garantiaSpec.tagClass = "tag-purple";
-    specs.push(garantiaSpec);
-
+    specs.push(getBooleanSpec("Garantía", product.garantia, "fa-solid fa-shield-halved"));
     specs.push(getBooleanSpec("Cable", product.cable, "fa-solid fa-plug"));
 
     const validSpecs = specs.filter(Boolean);
@@ -302,7 +347,7 @@ function renderIPhoneSpecs(product) {
     } else {
         iphoneSpecsGrid.innerHTML = validSpecs
             .map(spec => `
-                <div class="iphone-spec ${spec.tagClass}">
+                <div class="iphone-spec ${spec.tagClass}" ${spec.style ? `style="${spec.style}"` : ""}>
                     <span class="iphone-spec-icon" aria-hidden="true">
                         ${spec.iconSymbol ? escapeHtml(spec.iconSymbol) : `<i class="${escapeHtml(spec.icon)}"></i>`}
                     </span>
