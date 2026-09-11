@@ -1,5 +1,5 @@
 /* =========================================================
-   APPLESTORE LAWTON
+   LA TIENDA DE ULI APPLE
    ADMIN PANEL
 ========================================================= */
 
@@ -108,47 +108,6 @@ const lowStockProducts =
 
 
 /* =========================================================
-   ELEMENTOS IPHONE
-========================================================= */
-
-const iphoneAdminSection =
-    document.getElementById("iphoneAdminSection");
-
-const iphoneSimFisica =
-    document.getElementById("iphoneSimFisica");
-
-const iphoneLibreFabrica =
-    document.getElementById("iphoneLibreFabrica");
-
-const iphoneColor =
-    document.getElementById("iphoneColor");
-
-const iphoneCustomColorGroup =
-    document.getElementById("iphoneCustomColorGroup");
-
-const iphoneCustomColor =
-    document.getElementById("iphoneCustomColor");
-
-const iphoneStorage =
-    document.getElementById("iphoneStorage");
-
-const iphoneBattery =
-    document.getElementById("iphoneBattery");
-
-const iphoneFaceId =
-    document.getElementById("iphoneFaceId");
-
-const iphoneTrueTone =
-    document.getElementById("iphoneTrueTone");
-
-const iphoneWarranty =
-    document.getElementById("iphoneWarranty");
-
-const iphoneCable =
-    document.getElementById("iphoneCable");
-
-
-/* =========================================================
    ESTADO
 ========================================================= */
 
@@ -156,7 +115,7 @@ let products = [];
 
 let editingProductId = null;
 
-let selectedImageFile = null;
+let selectedImageFile = null; // Guardará el Blob procesado en WebP
 
 
 /* =========================================================
@@ -183,7 +142,7 @@ document.addEventListener(
 async function initializeAdmin() {
 
     console.log(
-        "AppleStore Lawton Admin iniciado."
+        "La Tienda de Uli Apple Admin iniciado."
     );
 
     setupNavigation();
@@ -197,8 +156,6 @@ async function initializeAdmin() {
     setupImageUpload();
 
     setupProductFilters();
-
-    setupIPhoneFields();
 
     await checkSession();
 
@@ -219,7 +176,6 @@ async function checkSession() {
         } = await supabaseClient.auth.getSession();
 
         if (error) {
-
             console.error(
                 "Error comprobando sesión:",
                 error
@@ -443,6 +399,7 @@ function showAdminPanel() {
 
     }
 
+
     loadProducts();
 
     showView("dashboard");
@@ -515,16 +472,12 @@ function setupNavigation() {
                 const view =
                     button.dataset.viewButton;
 
-
                 if (
                     view === "add-product" &&
                     !editingProductId
                 ) {
-
                     resetProductForm();
-
                 }
-
 
                 showView(view);
 
@@ -777,63 +730,7 @@ function normalizeProduct(product) {
 
         created_at:
             product.created_at ??
-            null,
-
-
-        /* =========================
-           IPHONE
-        ========================== */
-
-        sim_fisica:
-            product.sim_fisica === null ||
-            product.sim_fisica === undefined
-                ? null
-                : Boolean(product.sim_fisica),
-
-        libre_fabrica:
-            product.libre_fabrica === null ||
-            product.libre_fabrica === undefined
-                ? null
-                : Boolean(product.libre_fabrica),
-
-        color:
-            product.color ??
-            null,
-
-        almacenamiento:
-            product.almacenamiento ??
-            null,
-
-        bateria:
-            product.bateria === null ||
-            product.bateria === undefined ||
-            product.bateria === ""
-                ? null
-                : Number(product.bateria),
-
-        face_id:
-            product.face_id === null ||
-            product.face_id === undefined
-                ? null
-                : Boolean(product.face_id),
-
-        true_tone:
-            product.true_tone === null ||
-            product.true_tone === undefined
-                ? null
-                : Boolean(product.true_tone),
-
-        garantia:
-            product.garantia === null ||
-            product.garantia === undefined
-                ? null
-                : Boolean(product.garantia),
-
-        cable:
-            product.cable === null ||
-            product.cable === undefined
-                ? null
-                : Boolean(product.cable)
+            null
 
     };
 
@@ -874,12 +771,6 @@ function renderProducts() {
                     .toLowerCase()
                     .includes(search) ||
                 product.description
-                    .toLowerCase()
-                    .includes(search) ||
-                String(product.color || "")
-                    .toLowerCase()
-                    .includes(search) ||
-                String(product.almacenamiento || "")
                     .toLowerCase()
                     .includes(search);
 
@@ -960,15 +851,6 @@ function renderProductRow(product) {
         product.condition === "Usado"
             ? "used"
             : "new";
-
-
-    let stockClass = "";
-
-    if (product.stock <= 0) {
-        stockClass = "empty";
-    } else if (product.stock <= 2) {
-        stockClass = "low";
-    }
 
 
     return `
@@ -1139,602 +1021,6 @@ document.addEventListener(
 
 
 /* =========================================================
-   IPHONE
-========================================================= */
-
-function setupIPhoneFields() {
-
-    if (!productCategory) {
-        return;
-    }
-
-
-    productCategory.addEventListener(
-        "change",
-        handleCategoryChange
-    );
-
-
-    if (iphoneColor) {
-
-        iphoneColor.addEventListener(
-            "change",
-            handleColorChange
-        );
-
-    }
-
-
-    updateIPhoneSection();
-
-}
-
-
-/* =========================================================
-   CAMBIO DE CATEGORÍA
-========================================================= */
-
-function handleCategoryChange() {
-
-    updateIPhoneSection();
-
-}
-
-
-/* =========================================================
-   MOSTRAR / OCULTAR IPHONE
-========================================================= */
-
-function updateIPhoneSection() {
-
-    const isIPhone =
-        productCategory?.value === "iPhone";
-
-
-    if (!iphoneAdminSection) {
-        return;
-    }
-
-
-    iphoneAdminSection.hidden =
-        !isIPhone;
-
-
-    if (!isIPhone) {
-
-        clearIPhoneFields();
-
-        return;
-    }
-
-
-    updateCustomColorField();
-
-}
-
-
-/* =========================================================
-   COLOR
-========================================================= */
-
-function handleColorChange() {
-
-    updateCustomColorField();
-
-}
-
-
-function updateCustomColorField() {
-
-    if (
-        !iphoneCustomColorGroup ||
-        !iphoneColor
-    ) {
-        return;
-    }
-
-
-    const isOther =
-        iphoneColor.value === "Otro";
-
-
-    iphoneCustomColorGroup.hidden =
-        !isOther;
-
-
-    if (!isOther) {
-
-        iphoneCustomColor.value =
-            "";
-
-    }
-
-}
-
-
-/* =========================================================
-   LIMPIAR IPHONE
-========================================================= */
-
-function clearIPhoneFields() {
-
-    if (iphoneSimFisica) {
-        iphoneSimFisica.value = "";
-    }
-
-    if (iphoneLibreFabrica) {
-        iphoneLibreFabrica.value = "";
-    }
-
-    if (iphoneColor) {
-        iphoneColor.value = "";
-    }
-
-    if (iphoneCustomColor) {
-        iphoneCustomColor.value = "";
-    }
-
-    if (iphoneStorage) {
-        iphoneStorage.value = "";
-    }
-
-    if (iphoneBattery) {
-        iphoneBattery.value = "";
-    }
-
-    if (iphoneFaceId) {
-        iphoneFaceId.value = "";
-    }
-
-    if (iphoneTrueTone) {
-        iphoneTrueTone.value = "";
-    }
-
-    if (iphoneWarranty) {
-        iphoneWarranty.value = "";
-    }
-
-    if (iphoneCable) {
-        iphoneCable.value = "";
-    }
-
-
-    updateCustomColorField();
-
-}
-
-
-/* =========================================================
-   BOOLEAN
-========================================================= */
-
-function parseBooleanSelect(value) {
-
-    if (value === "true") {
-        return true;
-    }
-
-
-    if (value === "false") {
-        return false;
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   CARGAR IPHONE
-========================================================= */
-
-function loadIPhoneFields(product) {
-
-    if (!product || product.category !== "iPhone") {
-
-        clearIPhoneFields();
-
-        updateIPhoneSection();
-
-        return;
-    }
-
-
-    iphoneAdminSection.hidden =
-        false;
-
-
-    setBooleanSelect(
-        iphoneSimFisica,
-        product.sim_fisica
-    );
-
-
-    setBooleanSelect(
-        iphoneLibreFabrica,
-        product.libre_fabrica
-    );
-
-
-    setBooleanSelect(
-        iphoneFaceId,
-        product.face_id
-    );
-
-
-    setBooleanSelect(
-        iphoneTrueTone,
-        product.true_tone
-    );
-
-
-    setBooleanSelect(
-        iphoneWarranty,
-        product.garantia
-    );
-
-
-    setBooleanSelect(
-        iphoneCable,
-        product.cable
-    );
-
-
-    loadColorValue(
-        product.color
-    );
-
-
-    if (iphoneStorage) {
-
-        iphoneStorage.value =
-            product.almacenamiento || "";
-
-    }
-
-
-    if (iphoneBattery) {
-
-        iphoneBattery.value =
-            product.bateria === null ||
-            product.bateria === undefined
-                ? ""
-                : product.bateria;
-
-    }
-
-
-    updateCustomColorField();
-
-}
-
-
-/* =========================================================
-   CARGAR BOOLEAN
-========================================================= */
-
-function setBooleanSelect(
-    select,
-    value
-) {
-
-    if (!select) {
-        return;
-    }
-
-
-    if (value === true) {
-
-        select.value = "true";
-
-    } else if (value === false) {
-
-        select.value = "false";
-
-    } else {
-
-        select.value = "";
-
-    }
-
-}
-
-
-/* =========================================================
-   CARGAR COLOR
-========================================================= */
-
-function loadColorValue(value) {
-
-    if (!iphoneColor) {
-        return;
-    }
-
-
-    if (!value) {
-
-        iphoneColor.value = "";
-
-        if (iphoneCustomColor) {
-            iphoneCustomColor.value = "";
-        }
-
-        updateCustomColorField();
-
-        return;
-    }
-
-
-    const optionExists =
-        Array.from(
-            iphoneColor.options
-        ).some(
-            option =>
-                option.value === value
-        );
-
-
-    if (optionExists) {
-
-        iphoneColor.value =
-            value;
-
-        if (iphoneCustomColor) {
-            iphoneCustomColor.value = "";
-        }
-
-    } else {
-
-        iphoneColor.value =
-            "Otro";
-
-        if (iphoneCustomColor) {
-
-            iphoneCustomColor.value =
-                value;
-
-        }
-
-    }
-
-
-    updateCustomColorField();
-
-}
-
-
-/* =========================================================
-   VALIDAR IPHONE
-========================================================= */
-
-function validateIPhoneFields() {
-
-    if (
-        productCategory.value !== "iPhone"
-    ) {
-
-        return {
-            valid: true
-        };
-
-    }
-
-
-    const booleanFields = [
-
-        {
-            element: iphoneSimFisica,
-            name: "SIM física"
-        },
-
-        {
-            element: iphoneLibreFabrica,
-            name: "Libre de fábrica"
-        },
-
-        {
-            element: iphoneFaceId,
-            name: "Face ID"
-        },
-
-        {
-            element: iphoneTrueTone,
-            name: "True Tone"
-        },
-
-        {
-            element: iphoneWarranty,
-            name: "Garantía"
-        },
-
-        {
-            element: iphoneCable,
-            name: "Cable"
-        }
-
-    ];
-
-
-    for (
-        const field of booleanFields
-    ) {
-
-        if (
-            !field.element ||
-            field.element.value === ""
-        ) {
-
-            return {
-                valid: false,
-                message:
-                    `Selecciona Sí o No para "${field.name}".`
-            };
-
-        }
-
-    }
-
-
-    if (
-        iphoneColor.value === "Otro" &&
-        !iphoneCustomColor.value.trim()
-    ) {
-
-        return {
-            valid: false,
-            message:
-                "Especifica el color del iPhone."
-        };
-
-    }
-
-
-    if (
-        iphoneBattery.value !== ""
-    ) {
-
-        const battery =
-            Number(
-                iphoneBattery.value
-            );
-
-
-        if (
-            Number.isNaN(battery) ||
-            battery < 0 ||
-            battery > 100
-        ) {
-
-            return {
-                valid: false,
-                message:
-                    "La salud de batería debe estar entre 0 y 100%."
-            };
-
-        }
-
-    }
-
-
-    return {
-        valid: true
-    };
-
-}
-
-
-/* =========================================================
-   OBTENER DATOS IPHONE
-========================================================= */
-
-function getIPhoneData() {
-
-    if (
-        productCategory.value !== "iPhone"
-    ) {
-
-        return {
-
-            sim_fisica: null,
-
-            libre_fabrica: null,
-
-            color: null,
-
-            almacenamiento: null,
-
-            bateria: null,
-
-            face_id: null,
-
-            true_tone: null,
-
-            garantia: null,
-
-            cable: null
-
-        };
-
-    }
-
-
-    let color =
-        iphoneColor.value ||
-        null;
-
-
-    if (color === "Otro") {
-
-        color =
-            iphoneCustomColor.value.trim() ||
-            null;
-
-    }
-
-
-    let battery = null;
-
-
-    if (
-        iphoneBattery.value !== ""
-    ) {
-
-        battery =
-            Number(
-                iphoneBattery.value
-            );
-
-    }
-
-
-    return {
-
-        sim_fisica:
-            parseBooleanSelect(
-                iphoneSimFisica.value
-            ),
-
-        libre_fabrica:
-            parseBooleanSelect(
-                iphoneLibreFabrica.value
-            ),
-
-        color,
-
-        almacenamiento:
-            iphoneStorage.value ||
-            null,
-
-        bateria:
-            battery,
-
-        face_id:
-            parseBooleanSelect(
-                iphoneFaceId.value
-            ),
-
-        true_tone:
-            parseBooleanSelect(
-                iphoneTrueTone.value
-            ),
-
-        garantia:
-            parseBooleanSelect(
-                iphoneWarranty.value
-            ),
-
-        cable:
-            parseBooleanSelect(
-                iphoneCable.value
-            )
-
-    };
-
-}
-
-
-/* =========================================================
    ACTUALIZAR STOCK
 ========================================================= */
 
@@ -1893,19 +1179,9 @@ function editProduct(productId) {
     productImage.required = false;
 
 
-    /*
-        Cargamos las características
-        específicas del iPhone.
-    */
-
-    loadIPhoneFields(product);
-
-
     if (productFormTitle) {
-
         productFormTitle.textContent =
             "Editar producto";
-
     }
 
 
@@ -2094,38 +1370,13 @@ async function handleProductSubmit(event) {
     }
 
 
-    /*
-        Validamos características
-        específicas del iPhone.
-    */
-
-    const iphoneValidation =
-        validateIPhoneFields();
-
-
-    if (!iphoneValidation.valid) {
-
-        showFormMessage(
-            iphoneValidation.message,
-            "error"
-        );
-
-        return;
-    }
-
-
-    /*
-        Al crear un producto nuevo
-        la imagen es obligatoria.
-    */
-
     if (
         !editingProductId &&
         !selectedImageFile
     ) {
 
         showFormMessage(
-            "Selecciona una imagen WebP.",
+            "Selecciona una imagen para el producto.",
             "error"
         );
 
@@ -2137,7 +1388,7 @@ async function handleProductSubmit(event) {
 
     saveProductButton.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
-        Guardando...
+        Guardando y subiendo imagen...
     `;
 
 
@@ -2145,12 +1396,6 @@ async function handleProductSubmit(event) {
 
         let imageUrl = null;
 
-
-        /*
-            Si estamos editando y no
-            seleccionamos una nueva imagen,
-            conservamos la anterior.
-        */
 
         if (editingProductId) {
 
@@ -2169,11 +1414,6 @@ async function handleProductSubmit(event) {
         }
 
 
-        /*
-            Si existe una imagen nueva,
-            la subimos.
-        */
-
         if (selectedImageFile) {
 
             imageUrl =
@@ -2183,10 +1423,6 @@ async function handleProductSubmit(event) {
 
         }
 
-
-        /*
-            Datos principales.
-        */
 
         const productData = {
 
@@ -2204,14 +1440,7 @@ async function handleProductSubmit(event) {
 
             stock,
 
-            image_url: imageUrl,
-
-            /*
-                Características específicas
-                del iPhone.
-            */
-
-            ...getIPhoneData()
+            image_url: imageUrl
 
         };
 
@@ -2311,29 +1540,70 @@ async function handleProductSubmit(event) {
 
 
 /* =========================================================
-   SUBIR IMAGEN
+   CONVERSIÓN DE IMAGEN A WEBP (CANVAS API)
 ========================================================= */
 
-async function uploadImage(file) {
+function convertImageToWebP(file, quality = 0.85) {
 
-    if (!file) {
+    return new Promise((resolve, reject) => {
 
+        const reader = new FileReader();
+
+        reader.onload = event => {
+
+            const img = new Image();
+
+            img.onload = () => {
+
+                const canvas = document.createElement("canvas");
+
+                canvas.width = img.width;
+
+                canvas.height = img.height;
+
+                const ctx = canvas.getContext("2d");
+
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob(
+                    blob => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error("No se pudo convertir la imagen a WebP."));
+                        }
+                    },
+                    "image/webp",
+                    quality
+                );
+
+            };
+
+            img.onerror = error => reject(error);
+
+            img.src = event.target.result;
+
+        };
+
+        reader.onerror = error => reject(error);
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+/* =========================================================
+   SUBIR IMAGEN A SUPABASE
+========================================================= */
+
+async function uploadImage(fileBlob) {
+
+    if (!fileBlob) {
         throw new Error(
             "No se seleccionó ninguna imagen."
         );
-
-    }
-
-
-    if (
-        file.type !== "image/webp" &&
-        !file.name.toLowerCase().endsWith(".webp")
-    ) {
-
-        throw new Error(
-            "La imagen debe estar en formato WebP."
-        );
-
     }
 
 
@@ -2346,7 +1616,7 @@ async function uploadImage(file) {
 
 
     console.log(
-        "Subiendo imagen:",
+        "Subiendo imagen WebP procesada:",
         filePath
     );
 
@@ -2358,7 +1628,7 @@ async function uploadImage(file) {
         .from("product-images")
         .upload(
             filePath,
-            file,
+            fileBlob,
             {
                 cacheControl: "3600",
                 upsert: false,
@@ -2435,7 +1705,7 @@ function setupImageUpload() {
 }
 
 
-function handleImageSelection(event) {
+async function handleImageSelection(event) {
 
     const file =
         event.target.files?.[0];
@@ -2446,13 +1716,10 @@ function handleImageSelection(event) {
     }
 
 
-    if (
-        file.type !== "image/webp" &&
-        !file.name.toLowerCase().endsWith(".webp")
-    ) {
+    if (!file.type.startsWith("image/")) {
 
         showFormMessage(
-            "Solo se permiten imágenes WebP.",
+            "El archivo seleccionado no es una imagen válida.",
             "error"
         );
 
@@ -2462,32 +1729,53 @@ function handleImageSelection(event) {
     }
 
 
-    selectedImageFile =
-        file;
+    try {
+
+        uploadName.textContent = "Procesando imagen a WebP...";
+
+        imagePreview.innerHTML = `
+            <div class="image-preview-placeholder">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Procesando e imágen...</span>
+            </div>
+        `;
 
 
-    uploadName.textContent =
-        file.name;
+        // Convertir cualquier formato (PNG, JPG, etc.) a WebP
+        const webpBlob = await convertImageToWebP(file, 0.85);
 
 
-    const reader =
-        new FileReader();
+        selectedImageFile = webpBlob;
 
 
-    reader.onload =
-        event => {
+        const formattedName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
 
-            imagePreview.innerHTML = `
-                <img
-                    src="${event.target.result}"
-                    alt="Vista previa"
-                >
-            `;
-
-        };
+        uploadName.textContent = `${formattedName}.webp (Convertida con éxito)`;
 
 
-    reader.readAsDataURL(file);
+        // Vista previa desde el objeto WebP generado
+        const previewUrl = URL.createObjectURL(webpBlob);
+
+        imagePreview.innerHTML = `
+            <img
+                src="${previewUrl}"
+                alt="Vista previa"
+            >
+        `;
+
+
+    } catch (error) {
+
+        console.error("Error convirtiendo la imagen:", error);
+
+        showFormMessage(
+            "Error al procesar la imagen seleccionada.",
+            "error"
+        );
+
+        showImagePlaceholder();
+
+    }
 
 }
 
@@ -2518,17 +1806,11 @@ function resetProductForm() {
         true;
 
 
-    clearIPhoneFields();
-
-
-    updateIPhoneSection();
-
-
     showImagePlaceholder();
 
 
     uploadName.textContent =
-        "Solo imágenes .webp";
+        "Soporta JPG, PNG, WebP (se convertirá a WebP automáticamente)";
 
 
     productFormMessage.textContent = "";
@@ -2572,7 +1854,7 @@ function showImagePlaceholder() {
             <i class="fa-regular fa-image"></i>
 
             <span>
-                Selecciona una imagen WebP
+                Selecciona una imagen
             </span>
 
         </div>
