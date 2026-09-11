@@ -7,16 +7,26 @@
     --admin-black: #1d1d1f;
     --admin-dark: #000000;
     --admin-white: #ffffff;
+
     --admin-bg: #f5f5f7;
     --admin-gray: #6e6e73;
     --admin-light-gray: #86868b;
+
     --admin-border: #d2d2d7;
+    --admin-border-light: #e6e6e8;
+
     --admin-blue: #0071e3;
     --admin-blue-hover: #0077ed;
+
     --admin-green: #34c759;
     --admin-orange: #ff9500;
     --admin-red: #ff3b30;
+
     --admin-sidebar-width: 235px;
+
+    --admin-radius-sm: 10px;
+    --admin-radius-md: 14px;
+    --admin-radius-lg: 18px;
 }
 
 
@@ -30,11 +40,15 @@
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
+    min-height: 100vh;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -46,8 +60,11 @@ body {
 
     background: var(--admin-bg);
     color: var(--admin-black);
+
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
+
 
 button,
 input,
@@ -56,13 +73,25 @@ select {
     font: inherit;
 }
 
+
 button {
     cursor: pointer;
 }
 
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+
 a {
     color: inherit;
     text-decoration: none;
+}
+
+
+img {
+    max-width: 100%;
 }
 
 
@@ -93,7 +122,7 @@ a {
         radial-gradient(
             circle at top,
             #ffffff 0%,
-            #f5f5f7 50%,
+            #f5f5f7 52%,
             #eeeeee 100%
         );
 }
@@ -105,7 +134,7 @@ a {
 
     padding: 42px;
 
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.97);
 
     border: 1px solid rgba(0, 0, 0, 0.08);
 
@@ -119,14 +148,14 @@ a {
 
 
 .admin-logo {
+    margin-bottom: 28px;
+
     font-size: 28px;
     font-weight: 700;
+
     letter-spacing: -1.2px;
-
-    color: var(--admin-black);
-
-    margin-bottom: 28px;
 }
+
 
 .admin-logo span {
     color: var(--admin-blue);
@@ -136,12 +165,12 @@ a {
 .admin-eyebrow {
     margin-bottom: 8px;
 
+    color: var(--admin-blue);
+
     font-size: 11px;
     font-weight: 700;
 
     letter-spacing: 1.4px;
-
-    color: var(--admin-blue);
 }
 
 
@@ -179,10 +208,10 @@ a {
 
     margin-bottom: 8px;
 
+    color: var(--admin-black);
+
     font-size: 13px;
     font-weight: 600;
-
-    color: var(--admin-black);
 }
 
 
@@ -203,13 +232,15 @@ a {
 
     transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 
 .admin-form-group input,
 .admin-form-group select {
     height: 46px;
+
     padding: 0 14px;
 }
 
@@ -239,6 +270,20 @@ a {
 }
 
 
+.admin-form-group select {
+    cursor: pointer;
+}
+
+
+.admin-form-group input:disabled,
+.admin-form-group select:disabled,
+.admin-form-group textarea:disabled {
+    background: #f5f5f7;
+    color: var(--admin-light-gray);
+    cursor: not-allowed;
+}
+
+
 /* =========================================================
    BUTTONS
 ========================================================= */
@@ -247,7 +292,6 @@ a {
     min-height: 44px;
 
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
 
@@ -256,7 +300,6 @@ a {
     padding: 0 18px;
 
     border: 0;
-
     border-radius: 12px;
 
     font-size: 14px;
@@ -278,7 +321,6 @@ a {
 
 .admin-button:disabled {
     opacity: 0.55;
-    cursor: not-allowed;
 }
 
 
@@ -418,11 +460,9 @@ a {
 
 .admin-nav {
     width: 100%;
-
     min-height: 44px;
 
     display: flex;
-
     align-items: center;
 
     gap: 11px;
@@ -430,7 +470,6 @@ a {
     padding: 0 12px;
 
     border: 0;
-
     border-radius: 10px;
 
     background: transparent;
@@ -464,7 +503,6 @@ a {
     width: 20px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -489,11 +527,9 @@ a {
 .admin-sidebar-link,
 .admin-logout {
     width: 100%;
-
     min-height: 42px;
 
     display: flex;
-
     align-items: center;
 
     gap: 10px;
@@ -501,7 +537,6 @@ a {
     padding: 0 12px;
 
     border: 0;
-
     border-radius: 10px;
 
     background: transparent;
@@ -617,7 +652,6 @@ a {
     min-width: 0;
 
     display: flex;
-
     align-items: center;
 
     gap: 15px;
@@ -626,7 +660,7 @@ a {
 
     background: white;
 
-    border: 1px solid #e6e6e8;
+    border: 1px solid var(--admin-border-light);
 
     border-radius: 16px;
 
@@ -642,7 +676,6 @@ a {
     flex: 0 0 44px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -685,7 +718,7 @@ a {
 .admin-table-card {
     background: white;
 
-    border: 1px solid #e6e6e8;
+    border: 1px solid var(--admin-border-light);
 
     border-radius: 16px;
 
@@ -747,7 +780,6 @@ a {
     min-height: 70px;
 
     display: flex;
-
     align-items: center;
 
     gap: 13px;
@@ -755,7 +787,6 @@ a {
     padding: 15px;
 
     border: 1px solid #e5e5e7;
-
     border-radius: 12px;
 
     background: #fafafa;
@@ -796,7 +827,6 @@ a {
 
 .admin-toolbar {
     display: flex;
-
     align-items: center;
 
     gap: 12px;
@@ -812,13 +842,11 @@ a {
 
 .admin-search-wrapper input {
     width: 100%;
-
     height: 44px;
 
     padding: 0 15px 0 42px;
 
     border: 1px solid var(--admin-border);
-
     border-radius: 10px;
 
     background: white;
@@ -855,9 +883,8 @@ a {
 }
 
 
-.admin-select,
-.admin-form-group select {
-    cursor: pointer;
+.admin-select {
+    min-width: 190px;
 }
 
 
@@ -1013,7 +1040,6 @@ a {
     display: inline-flex;
 
     align-items: center;
-
     justify-content: center;
 
     min-height: 26px;
@@ -1104,7 +1130,6 @@ a {
 
 .table-actions {
     display: flex;
-
     align-items: center;
 
     gap: 6px;
@@ -1116,14 +1141,14 @@ a {
     height: 32px;
 
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
+
+    gap: 6px;
 
     padding: 0 10px;
 
     border: 0;
-
     border-radius: 8px;
 
     background: var(--admin-bg);
@@ -1177,7 +1202,8 @@ a {
 }
 
 
-.admin-price-input {
+.admin-price-input,
+.admin-number-suffix {
     position: relative;
 }
 
@@ -1187,7 +1213,8 @@ a {
 }
 
 
-.admin-price-input span {
+.admin-price-input span,
+.admin-number-suffix span {
     position: absolute;
 
     top: 50%;
@@ -1201,6 +1228,118 @@ a {
     font-weight: 700;
 
     pointer-events: none;
+}
+
+
+.admin-number-suffix input {
+    padding-right: 40px;
+}
+
+
+/* =========================================================
+   IPHONE ADMIN SECTION
+========================================================= */
+
+.iphone-admin-section {
+    overflow: hidden;
+
+    margin-top: 2px;
+
+    padding: 22px;
+
+    border: 1px solid #dbe9f8;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fbfdff 0%,
+            #f4f8fc 100%
+        );
+
+    box-shadow:
+        0 5px 20px rgba(0, 113, 227, 0.04);
+}
+
+
+.iphone-admin-section[hidden] {
+    display: none !important;
+}
+
+
+.iphone-admin-header {
+    margin-bottom: 22px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #e1e9f2;
+}
+
+
+.iphone-admin-title {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.iphone-admin-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #000000;
+
+    color: #ffffff;
+
+    font-size: 19px;
+}
+
+
+.iphone-admin-title h2 {
+    margin-bottom: 4px;
+
+    font-size: 17px;
+    line-height: 1.2;
+
+    letter-spacing: -0.4px;
+}
+
+
+.iphone-admin-title p {
+    color: var(--admin-gray);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+.iphone-admin-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px 20px;
+}
+
+
+.iphone-admin-grid .admin-form-group {
+    margin-bottom: 0;
+}
+
+
+.iphone-admin-grid .admin-form-group label {
+    font-size: 12px;
 }
 
 
@@ -1230,7 +1369,6 @@ a {
     margin: 0 auto 15px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -1256,7 +1394,6 @@ a {
 
 .image-preview-placeholder {
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
@@ -1283,7 +1420,6 @@ a {
     min-height: 40px;
 
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
 
@@ -1323,6 +1459,12 @@ a {
     color: var(--admin-light-gray);
 
     font-size: 11px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 
@@ -1381,21 +1523,37 @@ a {
 }
 
 
+@media (max-width: 900px) {
+
+    .admin-main {
+        padding: 28px;
+    }
+
+    .iphone-admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
 @media (max-width: 800px) {
 
     :root {
         --admin-sidebar-width: 210px;
     }
 
+
     .admin-main {
         padding: 25px;
     }
+
 
     .admin-page-header {
         align-items: flex-start;
 
         flex-direction: column;
     }
+
 
     .admin-page-header h1 {
         font-size: 30px;
@@ -1410,6 +1568,7 @@ a {
         display: block;
     }
 
+
     .admin-sidebar {
         position: relative;
 
@@ -1417,8 +1576,10 @@ a {
         height: auto;
 
         border-right: 0;
+
         border-bottom: 1px solid #e5e5e7;
     }
+
 
     .admin-navigation {
         display: grid;
@@ -1426,6 +1587,7 @@ a {
         grid-template-columns:
             repeat(3, minmax(0, 1fr));
     }
+
 
     .admin-nav {
         justify-content: center;
@@ -1439,9 +1601,11 @@ a {
         text-align: center;
     }
 
+
     .admin-sidebar-footer {
         margin-top: 20px;
     }
+
 
     .admin-main {
         grid-column: auto;
@@ -1449,16 +1613,29 @@ a {
         padding: 20px;
     }
 
+
     .admin-form-grid {
         grid-template-columns: 1fr;
     }
+
 
     .admin-form-full {
         grid-column: auto;
     }
 
+
     .admin-quick-actions {
         grid-template-columns: 1fr;
+    }
+
+
+    .iphone-admin-section {
+        padding: 18px;
+    }
+
+
+    .iphone-admin-title {
+        align-items: flex-start;
     }
 
 }
@@ -1470,56 +1647,78 @@ a {
         padding: 15px;
     }
 
+
     .admin-login-card {
         padding: 28px 22px;
 
         border-radius: 20px;
     }
 
+
     .admin-login-card h1 {
         font-size: 28px;
     }
+
 
     .admin-sidebar {
         padding: 20px 12px;
     }
 
+
     .admin-main {
         padding: 18px 14px;
     }
+
 
     .admin-stats-grid {
         grid-template-columns: 1fr;
     }
 
+
     .admin-card {
         padding: 18px;
     }
 
+
     .admin-toolbar {
         flex-direction: column;
+
         align-items: stretch;
     }
+
+
+    .admin-select {
+        width: 100%;
+
+        min-width: 0;
+    }
+
 
     .admin-form-actions {
         flex-direction: column-reverse;
     }
 
+
     .admin-form-actions .admin-button {
         width: 100%;
     }
 
+
+    .iphone-admin-section {
+        padding: 15px;
+    }
+
+
+    .iphone-admin-icon {
+        width: 40px;
+        height: 40px;
+
+        flex-basis: 40px;
+    }
+
+
+    .iphone-admin-title h2 {
+        font-size: 15px;
+    }
+
 }
-
-
-/* =========================================================
-   TEMPORARY DEBUG
-   Puedes eliminar esta sección después de comprobar que
-   el CSS está cargando correctamente.
-========================================================= */
-
-/*
-body.admin-body {
-    background: red !important;
-}
-*/
