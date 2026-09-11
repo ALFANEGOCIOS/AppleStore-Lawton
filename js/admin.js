@@ -7,7 +7,7 @@
 // 1. CONFIGURACIÓN E INICIALIZACIÓN SUPABASE
 // ==========================================
 const SUPABASE_URL = "https://tvlabyorkrelsqxzbjth.supabase.co";
-const SUPABASE_KEY = "sb_publishable_75rNY0L4KuTmPs44Z7RuIA_ggXpHe69";[cite: 3]
+const SUPABASE_KEY = "sb_publishable_75rNY0L4KuTmPs44Z7RuIA_ggXpHe69";
 
 // Inicializar cliente de Supabase
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -186,7 +186,7 @@ async function handleLogin(e) {
     DOM.loginButton.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
         <span>Iniciando...</span>
-    `;[cite: 3]
+    `;
 
     try {
         const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -203,7 +203,7 @@ async function handleLogin(e) {
         showAlert(DOM.loginError, DOM.loginErrorMessage, err.message || "Credenciales inválidas.");
     } finally {
         DOM.loginButton.disabled = false;
-        DOM.loginButton.innerHTML = originalBtnText;[cite: 3, 4]
+        DOM.loginButton.innerHTML = originalBtnText;
     }
 }
 
@@ -273,7 +273,7 @@ function renderProductsTable(products) {
     }
 
     DOM.productsTableBody.innerHTML = products.map(product => {
-        const p = normalizeProduct(product);[cite: 3]
+        const p = normalizeProduct(product);
         const isIphone = p.category.toLowerCase() === "iphone";
 
         let iphoneDetailsHtml = `<span class="badge badge-gray">N/A</span>`;
@@ -369,7 +369,7 @@ function openProductModal(productId = null) {
         const product = currentProducts.find(p => String(p.id) === String(productId));
         
         if (product) {
-            const p = normalizeProduct(product);[cite: 3]
+            const p = normalizeProduct(product);
             DOM.productId.value = p.id;
             DOM.pTitle.value = p.title;
             DOM.pCategory.value = p.category;
