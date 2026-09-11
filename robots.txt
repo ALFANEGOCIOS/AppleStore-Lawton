@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /admin.html
-
-Sitemap: https://applestorelawton.pages.dev/sitemap.xml
+Sitemap: https://alfanegocios.github.io/UliApple/sitemap.xml
