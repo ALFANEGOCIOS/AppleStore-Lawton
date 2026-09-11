@@ -1,311 +1,1221 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - La Tienda de Uli Apple</title>
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <!-- CSS del Admin -->
-    <link rel="stylesheet" href="admin.css">
+    <title>AppleStore Lawton | Administración</title>
 
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta
+        name="description"
+        content="Panel de administración de AppleStore Lawton"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./css/admin.css?v=2001"
+    >
 </head>
 
-<body>
+<body class="admin-body">
 
-    <!-- =========================================================
-       SECCIÓN DE LOGIN
-    ========================================================= -->
-    <section class="admin-login-section" id="adminLogin">
+    <!-- =========================
+         LOGIN
+    ========================== -->
+
+    <section class="admin-login" id="adminLogin">
+
         <div class="admin-login-card">
-            <div class="admin-login-header">
-                <i class="fa-solid fa-lock"></i>
-                <h2>La Tienda de Uli Apple</h2>
-                <p>Acceso administrativo al catálogo</p>
+
+            <div class="admin-logo">
+                AppleStore
+                <span>Lawton</span>
             </div>
 
-            <form class="admin-login-form" id="loginForm">
+            <p class="admin-eyebrow">
+                PANEL DE ADMINISTRACIÓN
+            </p>
+
+            <h1>
+                Iniciar sesión
+            </h1>
+
+            <p class="admin-login-description">
+                Accede para administrar los productos de la tienda.
+            </p>
+
+            <form id="loginForm">
+
                 <div class="admin-form-group">
-                    <label for="adminEmail">Correo electrónico</label>
-                    <input type="email" id="adminEmail" placeholder="admin@tienda.com" required>
+
+                    <label for="adminEmail">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        placeholder="admin@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
                 </div>
 
                 <div class="admin-form-group">
-                    <label for="adminPassword">Contraseña</label>
-                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+
+                    <label for="adminPassword">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required
+                    >
+
                 </div>
 
-                <div class="admin-login-error" id="loginError"></div>
-
-                <button type="submit" class="admin-button primary full" id="loginButton">
+                <button
+                    type="submit"
+                    class="admin-button admin-button-primary admin-button-full"
+                    id="loginButton"
+                >
                     <span>Iniciar sesión</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
+
+                <p
+                    class="admin-error"
+                    id="loginError"
+                ></p>
+
             </form>
+
         </div>
+
     </section>
 
 
-    <!-- =========================================================
-       PANEL DE ADMINISTRACIÓN
-    ========================================================= -->
-    <div class="admin-layout" id="adminPanel" style="display: none;">
+    <!-- =========================
+         PANEL ADMINISTRACIÓN
+    ========================== -->
 
-        <!-- BARRA LATERAL (SIDEBAR) -->
+    <div
+        class="admin-panel"
+        id="adminPanel"
+        style="display: none;"
+    >
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
         <aside class="admin-sidebar">
-            <div class="admin-brand">
-                <i class="fa-solid fa-store"></i>
-                <div>
-                    <h1>Uli Apple</h1>
-                    <span>Panel de Control</span>
+
+            <div class="admin-sidebar-header">
+
+                <div class="admin-sidebar-brand">
+                    AppleStore
+                    <span>Lawton</span>
                 </div>
+
+                <p class="admin-sidebar-subtitle">
+                    Administración
+                </p>
+
             </div>
 
-            <nav class="admin-nav">
-                <button type="button" class="admin-nav-item active" data-view-button="dashboard">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>Resumen</span>
+
+            <nav class="admin-navigation">
+
+                <button
+                    type="button"
+                    class="admin-nav active"
+                    data-view-button="dashboard"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
                 </button>
 
-                <button type="button" class="admin-nav-item" data-view-button="products">
-                    <i class="fa-solid fa-box-archive"></i>
-                    <span>Productos</span>
+
+                <button
+                    type="button"
+                    class="admin-nav"
+                    data-view-button="products"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </span>
+
+                    <span>
+                        Productos
+                    </span>
                 </button>
 
-                <button type="button" class="admin-nav-item" data-view-button="add-product">
-                    <i class="fa-solid fa-plus-circle"></i>
-                    <span>Agregar Producto</span>
+
+                <button
+                    type="button"
+                    class="admin-nav"
+                    data-view-button="add-product"
+                >
+                    <span class="admin-nav-icon">
+                        <i class="fa-solid fa-plus"></i>
+                    </span>
+
+                    <span>
+                        Agregar producto
+                    </span>
                 </button>
+
             </nav>
 
+
             <div class="admin-sidebar-footer">
-                <button type="button" class="admin-button logout" id="logoutButton">
+
+                <a
+                    href="index.html"
+                    target="_blank"
+                    rel="noopener"
+                    class="admin-sidebar-link"
+                >
+                    <i class="fa-solid fa-store"></i>
+                    Ver tienda
+                </a>
+
+                <button
+                    type="button"
+                    class="admin-logout"
+                    id="logoutButton"
+                >
                     <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Cerrar sesión</span>
+                    Cerrar sesión
                 </button>
+
             </div>
+
         </aside>
 
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+
         <main class="admin-main">
 
-            <!-- VISTA 1: DASHBOARD / RESUMEN -->
-            <section class="admin-view active" id="dashboardView">
-                <header class="admin-header">
-                    <div>
-                        <h2>Resumen General</h2>
-                        <p>Estado del inventario de La Tienda de Uli Apple</p>
-                    </div>
-                </header>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
+            <!-- =========================
+                 DASHBOARD
+            ========================== -->
+
+            <section
+                class="admin-view active"
+                id="dashboardView"
+            >
+
+                <div class="admin-page-header">
+
+                    <div>
+                        <p class="admin-eyebrow">
+                            RESUMEN
+                        </p>
+
+                        <h1>
+                            Dashboard
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Gestiona rápidamente el inventario de AppleStore Lawton.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-stats-grid">
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
                             <i class="fa-solid fa-box"></i>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="totalProducts">0</span>
-                            <span class="stat-label">Total Productos</span>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Productos
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="totalProducts"
+                            >
+                                0
+                            </strong>
                         </div>
+
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <i class="fa-solid fa-layer-group"></i>
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
+                            <i class="fa-solid fa-cubes"></i>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="totalStock">0</span>
-                            <span class="stat-label">Unidades en Stock</span>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Unidades en stock
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="totalStock"
+                            >
+                                0
+                            </strong>
                         </div>
+
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon blue">
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="availableProducts">0</span>
-                            <span class="stat-label">Disponibles</span>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Productos disponibles
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="availableProducts"
+                            >
+                                0
+                            </strong>
                         </div>
+
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon orange">
+
+                    <div class="admin-stat-card">
+
+                        <div class="admin-stat-icon">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="lowStockProducts">0</span>
-                            <span class="stat-label">Poco Stock (&le; 2)</span>
+
+                        <div>
+                            <span class="admin-stat-label">
+                                Stock bajo
+                            </span>
+
+                            <strong
+                                class="admin-stat-value"
+                                id="lowStockProducts"
+                            >
+                                0
+                            </strong>
                         </div>
+
                     </div>
+
                 </div>
+
+
+                <div class="admin-card">
+
+                    <div class="admin-card-header">
+
+                        <div>
+                            <h2>
+                                Acciones rápidas
+                            </h2>
+
+                            <p>
+                                Accede rápidamente a las funciones principales.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-quick-actions">
+
+                        <button
+                            type="button"
+                            class="admin-quick-action"
+                            data-view-button="add-product"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+
+                            <span>
+                                Agregar producto
+                            </span>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="admin-quick-action"
+                            data-view-button="products"
+                        >
+                            <i class="fa-solid fa-box"></i>
+
+                            <span>
+                                Ver productos
+                            </span>
+                        </button>
+
+                    </div>
+
+                </div>
+
             </section>
 
 
-            <!-- VISTA 2: LISTA DE PRODUCTOS -->
-            <section class="admin-view" id="productsView">
-                <header class="admin-header">
+            <!-- =========================
+                 PRODUCTOS
+            ========================== -->
+
+            <section
+                class="admin-view"
+                id="productsView"
+            >
+
+                <div class="admin-page-header">
+
                     <div>
-                        <h2>Gestión de Productos</h2>
-                        <p>Visualiza, edita o elimina productos de tu inventario</p>
+                        <p class="admin-eyebrow">
+                            INVENTARIO
+                        </p>
+
+                        <h1>
+                            Productos
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Administra todos los productos disponibles en la tienda.
+                        </p>
                     </div>
-                    <button type="button" class="admin-button primary" data-view-button="add-product">
+
+                    <button
+                        type="button"
+                        class="admin-button admin-button-primary"
+                        data-view-button="add-product"
+                    >
                         <i class="fa-solid fa-plus"></i>
-                        Nuevo producto
+                        Agregar producto
                     </button>
-                </header>
 
-                <!-- FILTROS Y BÚSQUEDA -->
-                <div class="admin-toolbar">
-                    <div class="admin-search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="adminProductSearch" placeholder="Buscar por nombre o descripción...">
+                </div>
+
+
+                <div class="admin-card">
+
+                    <div class="admin-toolbar">
+
+                        <div class="admin-search-wrapper">
+
+                            <i class="fa-solid fa-magnifying-glass admin-search-icon"></i>
+
+                            <input
+                                type="search"
+                                id="adminProductSearch"
+                                placeholder="Buscar producto..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+
+                        <select
+                            id="adminCategoryFilter"
+                            class="admin-select"
+                        >
+                            <option value="all">
+                                Todas las categorías
+                            </option>
+
+                            <option value="iPhone">
+                                iPhone
+                            </option>
+
+                            <option value="iPad">
+                                iPad
+                            </option>
+
+                            <option value="Mac">
+                                Mac
+                            </option>
+
+                            <option value="Apple Watch">
+                                Apple Watch
+                            </option>
+
+                            <option value="AirPods">
+                                AirPods
+                            </option>
+
+                            <option value="Accesorios">
+                                Accesorios
+                            </option>
+
+                            <option value="iPod">
+                                iPod
+                            </option>
+
+                            <option value="Otros">
+                                Otros
+                            </option>
+                        </select>
+
                     </div>
 
-                    <select id="adminCategoryFilter" class="admin-select-filter">
-                        <option value="all">Todas las categorías</option>
-                        <option value="iPhone">iPhone</option>
-                        <option value="iPad">iPad</option>
-                        <option value="MacBook">MacBook</option>
-                        <option value="Apple Watch">Apple Watch</option>
-                        <option value="AirPods">AirPods</option>
-                        <option value="Accesorios">Accesorios</option>
-                        <option value="Otros">Otros</option>
-                    </select>
                 </div>
 
-                <!-- TABLA DE PRODUCTOS -->
-                <div class="admin-table-container">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Categoría</th>
-                                <th>Precio</th>
-                                <th>Estado</th>
-                                <th>Stock</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminProductsTable">
-                            <!-- Filas generadas dinámicamente con JavaScript -->
-                        </tbody>
-                    </table>
+
+                <div class="admin-table-card">
+
+                    <div class="admin-products-table-wrapper">
+
+                        <table class="admin-products-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Condición</th>
+                                    <th>Stock</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="adminProductsTable">
+
+                                <tr>
+                                    <td
+                                        colspan="6"
+                                        class="admin-table-loading"
+                                    >
+                                        Cargando productos...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
                 </div>
+
             </section>
 
 
-            <!-- VISTA 3: FORMULARIO AGREGAR/EDITAR PRODUCTO -->
-            <section class="admin-view" id="addProductView">
-                <header class="admin-header">
+            <!-- =========================
+                 AGREGAR / EDITAR PRODUCTO
+            ========================== -->
+
+            <section
+                class="admin-view"
+                id="addProductView"
+            >
+
+                <div class="admin-page-header">
+
                     <div>
-                        <h2 id="productFormTitle">Agregar producto</h2>
-                        <p>Completa la información para publicar en el catálogo</p>
+                        <p class="admin-eyebrow">
+                            INVENTARIO
+                        </p>
+
+                        <h1 id="productFormTitle">
+                            Agregar producto
+                        </h1>
+
+                        <p class="admin-page-description">
+                            Añade un nuevo producto al catálogo de AppleStore Lawton.
+                        </p>
                     </div>
-                </header>
 
-                <form class="admin-product-form" id="productForm">
-                    <div class="admin-form-grid">
+                </div>
 
-                        <!-- NOMBRE -->
-                        <div class="admin-form-group admin-form-full">
-                            <label for="productName">Nombre del producto *</label>
-                            <input type="text" id="productName" placeholder="Ej: iPhone 13 Pro 128GB" required>
-                        </div>
 
-                        <!-- DESCRIPCIÓN -->
-                        <div class="admin-form-group admin-form-full">
-                            <label for="productDescription">Descripción breve</label>
-                            <textarea id="productDescription" rows="3" placeholder="Detalles de condición, accesorios incluidos, estado de la batería..."></textarea>
-                        </div>
+                <div class="admin-card">
 
-                        <!-- PRECIO -->
-                        <div class="admin-form-group">
-                            <label for="productPrice">Precio (USD) *</label>
-                            <input type="number" id="productPrice" min="0" step="0.01" placeholder="0.00" required>
-                        </div>
+                    <form
+                        class="product-form"
+                        id="productForm"
+                    >
 
-                        <!-- STOCK -->
-                        <div class="admin-form-group">
-                            <label for="productStock">Stock disponible *</label>
-                            <input type="number" id="productStock" min="0" step="1" value="1" required>
-                        </div>
+                        <div class="admin-form-grid">
 
-                        <!-- CATEGORÍA -->
-                        <div class="admin-form-group">
-                            <label for="productCategory">Categoría *</label>
-                            <select id="productCategory" required>
-                                <option value="">Selecciona una categoría</option>
-                                <option value="iPhone">iPhone</option>
-                                <option value="iPad">iPad</option>
-                                <option value="MacBook">MacBook</option>
-                                <option value="Apple Watch">Apple Watch</option>
-                                <option value="AirPods">AirPods</option>
-                                <option value="Accesorios">Accesorios</option>
-                                <option value="Otros">Otros</option>
-                            </select>
-                        </div>
 
-                        <!-- CONDICIÓN DE USO -->
-                        <div class="admin-form-group">
-                            <label for="productCondition">Condición *</label>
-                            <select id="productCondition" required>
-                                <option value="Nuevo">Nuevo / Sellado</option>
-                                <option value="Usado">Usado / Como Nuevo</option>
-                            </select>
-                        </div>
+                            <!-- NOMBRE -->
 
-                        <!-- IMAGEN DEL PRODUCTO (CONVERTIDOR A WEBP AUTOMÁTICO) -->
-                        <div class="admin-form-group admin-form-full">
-                            <label>Imagen del producto</label>
-                            <div class="image-upload-card">
-                                <div class="image-preview" id="imagePreview">
-                                    <div class="image-preview-placeholder">
-                                        <i class="fa-regular fa-image"></i>
-                                        <span>Selecciona una imagen (PNG, JPG, WebP)</span>
-                                    </div>
+                            <div class="admin-form-group">
+
+                                <label for="productName">
+                                    Nombre del producto
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="productName"
+                                    placeholder="Ej. iPhone 15 Pro"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- PRECIO -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productPrice">
+                                    Precio
+                                </label>
+
+                                <div class="admin-price-input">
+
+                                    <input
+                                        type="number"
+                                        id="productPrice"
+                                        placeholder="0.00"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                    >
+
+                                    <span>
+                                        USD
+                                    </span>
+
                                 </div>
 
-                                <input type="file" id="productImage" accept="image/*" hidden>
-
-                                <button type="button" class="admin-upload-button" id="imageUploadButton">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                                    Seleccionar imagen
-                                </button>
-
-                                <p class="upload-name" id="uploadName">
-                                    Soporta JPG, PNG, WebP (se convertirá a WebP automáticamente)
-                                </p>
                             </div>
+
+
+                            <!-- CATEGORÍA -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productCategory">
+                                    Categoría
+                                </label>
+
+                                <select
+                                    id="productCategory"
+                                    required
+                                >
+                                    <option value="">
+                                        Seleccionar categoría
+                                    </option>
+
+                                    <option value="iPhone">
+                                        iPhone
+                                    </option>
+
+                                    <option value="iPad">
+                                        iPad
+                                    </option>
+
+                                    <option value="Mac">
+                                        Mac
+                                    </option>
+
+                                    <option value="Apple Watch">
+                                        Apple Watch
+                                    </option>
+
+                                    <option value="AirPods">
+                                        AirPods
+                                    </option>
+
+                                    <option value="Accesorios">
+                                        Accesorios
+                                    </option>
+
+                                    <option value="iPod">
+                                        iPod
+                                    </option>
+
+                                    <option value="Otros">
+                                        Otros
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- CONDICIÓN -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productCondition">
+                                    Condición
+                                </label>
+
+                                <select
+                                    id="productCondition"
+                                    required
+                                >
+                                    <option value="Nuevo">
+                                        Nuevo
+                                    </option>
+
+                                    <option value="Usado">
+                                        Usado
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <!-- STOCK -->
+
+                            <div class="admin-form-group">
+
+                                <label for="productStock">
+                                    Stock
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="productStock"
+                                    placeholder="0"
+                                    min="0"
+                                    step="1"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- DESCRIPCIÓN -->
+
+                            <div class="admin-form-group admin-form-full">
+
+                                <label for="productDescription">
+                                    Descripción
+                                </label>
+
+                                <textarea
+                                    id="productDescription"
+                                    rows="5"
+                                    placeholder="Descripción breve del producto..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- =================================
+                                 CARACTERÍSTICAS IPHONE
+                            ================================== -->
+
+                            <div
+                                class="iphone-admin-section admin-form-full"
+                                id="iphoneAdminSection"
+                                hidden
+                            >
+
+                                <div class="iphone-admin-header">
+
+                                    <div class="iphone-admin-title">
+
+                                        <div class="iphone-admin-icon">
+                                            <i class="fa-brands fa-apple"></i>
+                                        </div>
+
+                                        <div>
+                                            <h2>
+                                                Características del iPhone
+                                            </h2>
+
+                                            <p>
+                                                Información específica que aparecerá en los detalles del producto.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="iphone-admin-grid">
+
+
+                                    <!-- SIM -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneSimFisica">
+                                            SIM física
+                                        </label>
+
+                                        <select id="iphoneSimFisica">
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- LIBRE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneLibreFabrica">
+                                            Libre de fábrica
+                                        </label>
+
+                                        <select id="iphoneLibreFabrica">
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- COLOR -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneColor">
+                                            Color
+                                        </label>
+
+                                        <select id="iphoneColor">
+
+                                            <option value="">
+                                                Seleccionar color
+                                            </option>
+
+                                            <option value="Natural">
+                                                Natural
+                                            </option>
+
+                                            <option value="Titanio negro">
+                                                Titanio negro
+                                            </option>
+
+                                            <option value="Titanio blanco">
+                                                Titanio blanco
+                                            </option>
+
+                                            <option value="Titanio azul">
+                                                Titanio azul
+                                            </option>
+
+                                            <option value="Negro">
+                                                Negro
+                                            </option>
+
+                                            <option value="Blanco">
+                                                Blanco
+                                            </option>
+
+                                            <option value="Plata">
+                                                Plata
+                                            </option>
+
+                                            <option value="Oro">
+                                                Oro
+                                            </option>
+
+                                            <option value="Rosa">
+                                                Rosa
+                                            </option>
+
+                                            <option value="Rojo">
+                                                Rojo
+                                            </option>
+
+                                            <option value="Azul">
+                                                Azul
+                                            </option>
+
+                                            <option value="Verde">
+                                                Verde
+                                            </option>
+
+                                            <option value="Morado">
+                                                Morado
+                                            </option>
+
+                                            <option value="Otro">
+                                                Otro
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- OTRO COLOR -->
+
+                                    <div
+                                        class="admin-form-group"
+                                        id="iphoneCustomColorGroup"
+                                        hidden
+                                    >
+
+                                        <label for="iphoneCustomColor">
+                                            Especificar color
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="iphoneCustomColor"
+                                            placeholder="Ej. Azul Sierra"
+                                            maxlength="50"
+                                        >
+
+                                    </div>
+
+
+                                    <!-- ALMACENAMIENTO -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneStorage">
+                                            Almacenamiento
+                                        </label>
+
+                                        <select id="iphoneStorage">
+
+                                            <option value="">
+                                                Seleccionar almacenamiento
+                                            </option>
+
+                                            <option value="64 GB">
+                                                64 GB
+                                            </option>
+
+                                            <option value="128 GB">
+                                                128 GB
+                                            </option>
+
+                                            <option value="256 GB">
+                                                256 GB
+                                            </option>
+
+                                            <option value="512 GB">
+                                                512 GB
+                                            </option>
+
+                                            <option value="1 TB">
+                                                1 TB
+                                            </option>
+
+                                            <option value="2 TB">
+                                                2 TB
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- BATERÍA -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneBattery">
+                                            Salud de batería
+                                        </label>
+
+                                        <div class="admin-number-suffix">
+
+                                            <input
+                                                type="number"
+                                                id="iphoneBattery"
+                                                min="0"
+                                                max="100"
+                                                step="1"
+                                                placeholder="Ej. 97"
+                                            >
+
+                                            <span>%</span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- FACE ID -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneFaceId">
+                                            Face ID
+                                        </label>
+
+                                        <select id="iphoneFaceId">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- TRUE TONE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneTrueTone">
+                                            True Tone
+                                        </label>
+
+                                        <select id="iphoneTrueTone">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- GARANTÍA -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneWarranty">
+                                            Garantía
+                                        </label>
+
+                                        <select id="iphoneWarranty">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- CABLE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneCable">
+                                            Cable
+                                        </label>
+
+                                        <select id="iphoneCable">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- IMAGEN -->
+
+                            <div class="admin-form-group admin-form-full">
+
+                                <label>
+                                    Imagen del producto
+                                </label>
+
+                                <div class="image-upload-card">
+
+                                    <div
+                                        class="image-preview"
+                                        id="imagePreview"
+                                    >
+
+                                        <div class="image-preview-placeholder">
+
+                                            <i class="fa-regular fa-image"></i>
+
+                                            <span>
+                                                Selecciona una imagen WebP
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <input
+                                        type="file"
+                                        id="productImage"
+                                        accept="image/webp,.webp"
+                                        hidden
+                                    >
+
+
+                                    <button
+                                        type="button"
+                                        class="admin-upload-button"
+                                        id="imageUploadButton"
+                                    >
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                                        Seleccionar imagen
+                                    </button>
+
+
+                                    <p
+                                        class="upload-name"
+                                        id="uploadName"
+                                    >
+                                        Solo imágenes .webp
+                                    </p>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
-                    </div>
 
-                    <!-- MENSAJE DE ESTADO DEL FORMULARIO -->
-                    <div class="admin-form-message" id="productFormMessage"></div>
+                        <!-- MENSAJE -->
 
-                    <!-- BOTÓN DE GUARDAR -->
-                    <div class="admin-form-actions">
-                        <button type="submit" class="admin-button primary" id="saveProductButton">
-                            <i class="fa-solid fa-check"></i>
-                            Guardar producto
-                        </button>
-                    </div>
-                </form>
+                        <div
+                            class="admin-form-message"
+                            id="productFormMessage"
+                        ></div>
+
+
+                        <!-- BOTONES -->
+
+                        <div class="admin-form-actions">
+
+                            <button
+                                type="button"
+                                class="admin-button admin-button-secondary"
+                                data-view-button="products"
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="admin-button admin-button-primary"
+                                id="saveProductButton"
+                            >
+                                <i class="fa-solid fa-check"></i>
+
+                                Guardar producto
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
             </section>
 
         </main>
 
     </div>
 
-    <!-- Script de lógica del Admin -->
-    <script src="admin.js"></script>
-</body>
 
+    <!-- =========================
+         SUPABASE
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================
+         ICONOS
+    ========================== -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+
+    <!-- =========================
+         ADMIN JS
+    ========================== -->
+
+    <script src="./js/admin.js?v=2001"></script>
+
+</body>
 </html>
