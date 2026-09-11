@@ -31,32 +31,39 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="La Tienda de Uli Apple">
     <meta property="og:title" content="La Tienda de Uli Apple | Productos Apple">
+
     <meta
         property="og:description"
         content="Productos Apple nuevos y usados, iPhone, iPad, Mac, Apple Watch, AirPods y accesorios."
     >
+
     <meta
         property="og:url"
         content="https://applestorelawton.pages.dev/"
     >
+
     <meta
         property="og:image"
         content="https://applestorelawton.pages.dev/og-image.jpg"
     >
+
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="es_ES">
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
+
     <meta
         name="twitter:title"
         content="La Tienda de Uli Apple | Productos Apple"
     >
+
     <meta
         name="twitter:description"
         content="Productos Apple nuevos y usados, iPhone, iPad, Mac, Apple Watch, AirPods y accesorios."
     >
+
     <meta
         name="twitter:image"
         content="https://applestorelawton.pages.dev/og-image.jpg"
@@ -80,8 +87,130 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- CSS -->
+    <!-- CSS principal -->
     <link rel="stylesheet" href="css/styles.css?v=2001">
+
+
+    <!-- =====================================================
+         ESTILOS CARACTERÍSTICAS IPHONE
+    ====================================================== -->
+
+    <style>
+
+        .iphone-specs {
+            margin-top: 24px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .iphone-specs[hidden] {
+            display: none !important;
+        }
+
+        .iphone-specs-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #171717;
+        }
+
+        .iphone-specs-title i {
+            font-size: 14px;
+            opacity: 0.75;
+        }
+
+        .iphone-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .iphone-spec {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-height: 42px;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: #f7f7f7;
+            border: 1px solid rgba(0, 0, 0, 0.055);
+            font-size: 13px;
+            line-height: 1.3;
+        }
+
+        .iphone-spec-icon {
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #ffffff;
+            font-size: 11px;
+        }
+
+        .iphone-spec-icon.yes {
+            color: #188038;
+        }
+
+        .iphone-spec-icon.no {
+            color: #b42318;
+        }
+
+        .iphone-spec-icon.info {
+            color: #555555;
+        }
+
+        .iphone-spec-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .iphone-spec-label {
+            font-size: 11px;
+            color: #777777;
+        }
+
+        .iphone-spec-value {
+            font-weight: 600;
+            color: #1b1b1b;
+            overflow-wrap: anywhere;
+        }
+
+        .iphone-spec-empty {
+            padding: 13px 15px;
+            border-radius: 12px;
+            background: #f7f7f7;
+            color: #777777;
+            font-size: 13px;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .iphone-specs {
+                margin-top: 20px;
+                padding-top: 18px;
+            }
+
+            .iphone-specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .iphone-spec {
+                min-height: 40px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -916,6 +1045,36 @@
                 ></p>
 
 
+                <!-- =================================================
+                     CARACTERÍSTICAS IPHONE
+                ================================================== -->
+
+                <section
+                    class="iphone-specs"
+                    id="iphoneSpecs"
+                    hidden
+                    aria-label="Características del iPhone"
+                >
+
+                    <div class="iphone-specs-title">
+
+                        <i class="fa-brands fa-apple"></i>
+
+                        <span>
+                            Características del iPhone
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="iphone-specs-grid"
+                        id="iphoneSpecsGrid"
+                    ></div>
+
+                </section>
+
+
                 <div class="modal-bottom">
 
                     <strong
@@ -953,16 +1112,18 @@
         class="toast"
         id="toast"
     >
+
         <i class="fa-solid fa-circle-check"></i>
 
         <span id="toastMessage">
             Producto añadido
         </span>
+
     </div>
 
 
 
-    <script src="js/script.js?v=2001"></script>
+    <script src="js/script.js?v=2002"></script>
 
 </body>
 </html>
