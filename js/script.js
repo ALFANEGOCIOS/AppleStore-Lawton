@@ -3,6 +3,7 @@
    Storefront JavaScript
    ========================================================= */
 
+
 const SUPABASE_URL =
     "https://tvlabyorkrelsqxzbjth.supabase.co";
 
@@ -125,7 +126,8 @@ function normalizeProduct(product) {
 
     return {
 
-        id: product.id,
+        id:
+            product.id,
 
         name:
             product.name ||
@@ -157,8 +159,8 @@ function normalizeProduct(product) {
 
 
         /* =================================================
-           CARACTERÍSTICAS ESPECÍFICAS DEL IPHONE
-        ================================================== */
+           CARACTERÍSTICAS IPHONE
+        ================================================= */
 
         sim_fisica:
             product.sim_fisica === null ||
@@ -315,8 +317,8 @@ async function loadProducts() {
 
 
         /*
-         * Algunos proyectos pueden no tener created_at.
-         * Hacemos un segundo intento sin ese orden.
+         * Segundo intento por si la tabla
+         * no tiene created_at.
          */
 
         if (result.error) {
@@ -518,7 +520,7 @@ function createProductCard(product) {
 
 
 /* =========================================================
-   AYUDAS PARA CARACTERÍSTICAS IPHONE
+   AYUDAS IPHONE
    ========================================================= */
 
 function isIPhone(product) {
@@ -531,13 +533,9 @@ function isIPhone(product) {
 }
 
 
-/*
- * Convierte boolean:
- *
- * true  -> Sí
- * false -> No
- * null  -> No especificado
- */
+/* =========================================================
+   BOOLEANOS
+   ========================================================= */
 
 function getBooleanSpec(
     label,
@@ -595,9 +593,9 @@ function getBooleanSpec(
 }
 
 
-/*
- * Características de texto.
- */
+/* =========================================================
+   TEXTOS
+   ========================================================= */
 
 function getTextSpec(
     label,
@@ -628,18 +626,16 @@ function getTextSpec(
             "info",
 
         iconSymbol:
-            "•"
+            ""
     };
 }
 
 
-/*
- * Batería.
- */
+/* =========================================================
+   BATERÍA
+   ========================================================= */
 
-function getBatterySpec(
-    value
-) {
+function getBatterySpec(value) {
 
     if (
         value === null ||
@@ -654,7 +650,7 @@ function getBatterySpec(
     return {
 
         label:
-            "Salud de batería",
+            "Batería",
 
         value:
             `${Number(value)}%`,
@@ -683,8 +679,8 @@ function renderIPhoneSpecs(product) {
 
 
     /*
-     * Si NO es iPhone:
-     * ocultamos completamente la sección.
+     * Solo mostramos estas características
+     * cuando el producto pertenece a iPhone.
      */
 
     if (!isIPhone(product)) {
@@ -700,7 +696,56 @@ function renderIPhoneSpecs(product) {
     const specs = [];
 
 
-    /* SIM física */
+    /* =====================================================
+       INFORMACIÓN GENERAL
+    ====================================================== */
+
+    const colorSpec =
+        getTextSpec(
+            "Color",
+            product.color,
+            "fa-solid fa-palette"
+        );
+
+    if (colorSpec) {
+
+        specs.push(
+            colorSpec
+        );
+    }
+
+
+    const storageSpec =
+        getTextSpec(
+            "Almacenamiento",
+            product.almacenamiento,
+            "fa-solid fa-hard-drive"
+        );
+
+    if (storageSpec) {
+
+        specs.push(
+            storageSpec
+        );
+    }
+
+
+    const batterySpec =
+        getBatterySpec(
+            product.bateria
+        );
+
+    if (batterySpec) {
+
+        specs.push(
+            batterySpec
+        );
+    }
+
+
+    /* =====================================================
+       CARACTERÍSTICAS BOOLEANAS
+    ====================================================== */
 
     specs.push(
         getBooleanSpec(
@@ -711,8 +756,6 @@ function renderIPhoneSpecs(product) {
     );
 
 
-    /* Libre de fábrica */
-
     specs.push(
         getBooleanSpec(
             "Libre de fábrica",
@@ -721,48 +764,6 @@ function renderIPhoneSpecs(product) {
         )
     );
 
-
-    /* Color */
-
-    const colorSpec =
-        getTextSpec(
-            "Color",
-            product.color,
-            "fa-solid fa-palette"
-        );
-
-    if (colorSpec) {
-        specs.push(colorSpec);
-    }
-
-
-    /* Almacenamiento */
-
-    const storageSpec =
-        getTextSpec(
-            "Almacenamiento",
-            product.almacenamiento,
-            "fa-solid fa-hard-drive"
-        );
-
-    if (storageSpec) {
-        specs.push(storageSpec);
-    }
-
-
-    /* Batería */
-
-    const batterySpec =
-        getBatterySpec(
-            product.bateria
-        );
-
-    if (batterySpec) {
-        specs.push(batterySpec);
-    }
-
-
-    /* Face ID */
 
     specs.push(
         getBooleanSpec(
@@ -773,8 +774,6 @@ function renderIPhoneSpecs(product) {
     );
 
 
-    /* True Tone */
-
     specs.push(
         getBooleanSpec(
             "True Tone",
@@ -783,8 +782,6 @@ function renderIPhoneSpecs(product) {
         )
     );
 
-
-    /* Garantía */
 
     specs.push(
         getBooleanSpec(
@@ -795,8 +792,6 @@ function renderIPhoneSpecs(product) {
     );
 
 
-    /* Cable */
-
     specs.push(
         getBooleanSpec(
             "Cable incluido",
@@ -806,16 +801,13 @@ function renderIPhoneSpecs(product) {
     );
 
 
-    /*
-     * Eliminamos valores nulos.
-     *
-     * Las características booleanas nunca son null
-     * porque mostramos "No especificado".
-     */
-
     const validSpecs =
         specs.filter(Boolean);
 
+
+    /*
+     * Si no hay ninguna característica.
+     */
 
     if (!validSpecs.length) {
 
@@ -838,6 +830,7 @@ function renderIPhoneSpecs(product) {
 
                             <span
                                 class="iphone-spec-icon ${spec.iconClass}"
+                                aria-hidden="true"
                             >
 
                                 ${
@@ -937,8 +930,7 @@ function openProductModal(product) {
 
 
     /*
-     * NUEVO:
-     * Renderizar características si es iPhone.
+     * Características del iPhone.
      */
 
     renderIPhoneSpecs(
@@ -976,7 +968,7 @@ function closeProductModal() {
 
 
 /* =========================================================
-   CATEGORÍAS / FILTROS
+   FILTROS
    ========================================================= */
 
 function applyFilters() {
@@ -1055,7 +1047,9 @@ function selectCategory(category) {
 
 
     document
-        .getElementById("productos")
+        .getElementById(
+            "productos"
+        )
         .scrollIntoView({
             behavior: "smooth"
         });
@@ -1420,7 +1414,7 @@ function renderCart() {
 
 
 /* =========================================================
-   ABRIR / CERRAR CART
+   CART DRAWER
    ========================================================= */
 
 function openCart() {
