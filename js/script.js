@@ -190,7 +190,7 @@ function createProductCard(product) {
 
                 <div class="product-bottom">
                     <strong class="product-price">${formatPrice(product.price)}</strong>
-                    <button class="product-add" type="button" data-action="view" data-id="${escapeHtml(product.id)}" aria-label="Ver producto" title="Ver producto">
+                    <button class="product-add" type="button" data-action="add" data-id="${escapeHtml(product.id)}" aria-label="Añadir a la bolsa" title="Añadir a la bolsa">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -225,6 +225,11 @@ function getIPhoneColorStyle(colorName) {
         "oro": { bg: "#f9e5c9", text: "#4a3b2c" },
         "dorado": { bg: "#f9e5c9", text: "#4a3b2c" },
         "gold": { bg: "#f9e5c9", text: "#4a3b2c" },
+        "rosa": { bg: "#fae0e4", text: "#5c2b35" },
+        "rosado": { bg: "#fae0e4", text: "#5c2b35" },
+        "pink": { bg: "#fae0e4", text: "#5c2b35" },
+        "oro rosa": { bg: "#ea9899", text: "#ffffff" },
+        "rose gold": { bg: "#ea9899", text: "#ffffff" },
         "azul": { bg: "#0071e3", text: "#ffffff" },
         "blue": { bg: "#0071e3", text: "#ffffff" },
         "rojo": { bg: "#e3000f", text: "#ffffff" },
@@ -583,11 +588,23 @@ function checkoutWhatsApp() {
    EVENTOS
    ========================================================= */
 productsGrid.addEventListener("click", event => {
-    const button = event.target.closest("[data-action='view']");
-    if (!button) return;
-    const id = button.dataset.id;
-    const product = products.find(item => String(item.id) === String(id));
-    if (product) openProductModal(product);
+    // Si presiona el botón + añade directo a la bolsa sin abrir modal
+    const addButton = event.target.closest("[data-action='add']");
+    if (addButton) {
+        event.stopPropagation();
+        const id = addButton.dataset.id;
+        const product = products.find(item => String(item.id) === String(id));
+        if (product) addToCart(product);
+        return;
+    }
+
+    // Si toca cualquier parte de la tarjeta abre el modal explicativo
+    const card = event.target.closest(".product-card");
+    if (card) {
+        const id = card.dataset.productId;
+        const product = products.find(item => String(item.id) === String(id));
+        if (product) openProductModal(product);
+    }
 });
 
 cartItems.addEventListener("click", event => {
