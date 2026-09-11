@@ -1,36 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <!-- Página de Inicio -->
+  <!-- La Tienda de Uli Apple - Página Principal -->
   <url>
     <loc>https://alfanegocios.github.io/UliApple/</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Sección de iPhones -->
-  <url>
-    <loc>https://alfanegocios.github.io/UliApple/#iphones</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Sección de MacBooks -->
-  <url>
-    <loc>https://alfanegocios.github.io/UliApple/#macbooks</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Sección de Servicio Técnico -->
-  <url>
-    <loc>https://alfanegocios.github.io/UliApple/#servicios</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
 </urlset>
