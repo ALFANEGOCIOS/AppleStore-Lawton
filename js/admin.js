@@ -1,5 +1,5 @@
 /* =========================================================
-   APPLESTORE LAWTON
+   LA TIENDA DE ULI APPLE
    ADMIN PANEL
 ========================================================= */
 
@@ -115,30 +115,12 @@ let products = [];
 
 let editingProductId = null;
 
-let selectedImageFile = null;
+let selectedImageFile = null; // Guardará el Blob procesado en WebP
 
 
 /* =========================================================
    MAPA DE VISTAS
 ========================================================= */
-
-/*
-    IMPORTANTE:
-
-    Los botones utilizan:
-
-        dashboard
-        products
-        add-product
-
-    Pero los IDs reales son:
-
-        dashboardView
-        productsView
-        addProductView
-
-    Por eso NO construimos el ID automáticamente.
-*/
 
 const viewIds = {
     dashboard: "dashboardView",
@@ -160,7 +142,7 @@ document.addEventListener(
 async function initializeAdmin() {
 
     console.log(
-        "AppleStore Lawton Admin iniciado."
+        "La Tienda de Uli Apple Admin iniciado."
     );
 
     setupNavigation();
@@ -411,12 +393,6 @@ function showAdminPanel() {
 
     if (adminPanel) {
 
-        /*
-            Eliminamos el display inline
-            para permitir que CSS controle
-            el layout con GRID.
-        */
-
         adminPanel.style.removeProperty(
             "display"
         );
@@ -495,16 +471,6 @@ function setupNavigation() {
 
                 const view =
                     button.dataset.viewButton;
-
-                /*
-                    Solo limpiamos el formulario
-                    cuando realmente queremos
-                    crear un producto nuevo.
-
-                    NO lo hacemos dentro de
-                    showView(), porque editar
-                    también abre add-product.
-                */
 
                 if (
                     view === "add-product" &&
@@ -595,11 +561,6 @@ function showView(view) {
     });
 
 
-    /*
-        Actualizamos el título
-        de la pantalla de producto.
-    */
-
     if (
         view === "add-product" &&
         productFormTitle
@@ -659,11 +620,6 @@ async function loadProducts() {
                 );
 
 
-        /*
-            Si created_at no existe,
-            hacemos una segunda consulta.
-        */
-
         if (response.error) {
 
             console.warn(
@@ -702,11 +658,6 @@ async function loadProducts() {
 
         console.log(
             "Productos cargados:",
-            products
-        );
-
-
-        console.table(
             products
         );
 
@@ -900,15 +851,6 @@ function renderProductRow(product) {
         product.condition === "Usado"
             ? "used"
             : "new";
-
-
-    let stockClass = "";
-
-    if (product.stock <= 0) {
-        stockClass = "empty";
-    } else if (product.stock <= 2) {
-        stockClass = "low";
-    }
 
 
     return `
@@ -1428,18 +1370,13 @@ async function handleProductSubmit(event) {
     }
 
 
-    /*
-        Al crear un producto nuevo
-        la imagen es obligatoria.
-    */
-
     if (
         !editingProductId &&
         !selectedImageFile
     ) {
 
         showFormMessage(
-            "Selecciona una imagen WebP.",
+            "Selecciona una imagen para el producto.",
             "error"
         );
 
@@ -1451,7 +1388,7 @@ async function handleProductSubmit(event) {
 
     saveProductButton.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
-        Guardando...
+        Guardando y subiendo imagen...
     `;
 
 
@@ -1459,12 +1396,6 @@ async function handleProductSubmit(event) {
 
         let imageUrl = null;
 
-
-        /*
-            Si estamos editando y no
-            seleccionamos una nueva imagen,
-            conservamos la anterior.
-        */
 
         if (editingProductId) {
 
@@ -1482,11 +1413,6 @@ async function handleProductSubmit(event) {
 
         }
 
-
-        /*
-            Si existe una imagen nueva,
-            la subimos.
-        */
 
         if (selectedImageFile) {
 
@@ -1614,35 +1540,75 @@ async function handleProductSubmit(event) {
 
 
 /* =========================================================
-   SUBIR IMAGEN
+   CONVERSIÓN DE IMAGEN A WEBP (CANVAS API)
 ========================================================= */
 
-async function uploadImage(file) {
+function convertImageToWebP(file, quality = 0.85) {
 
-    if (!file) {
+    return new Promise((resolve, reject) => {
+
+        const reader = new FileReader();
+
+        reader.onload = event => {
+
+            const img = new Image();
+
+            img.onload = () => {
+
+                const canvas = document.createElement("canvas");
+
+                canvas.width = img.width;
+
+                canvas.height = img.height;
+
+                const ctx = canvas.getContext("2d");
+
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob(
+                    blob => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error("No se pudo convertir la imagen a WebP."));
+                        }
+                    },
+                    "image/webp",
+                    quality
+                );
+
+            };
+
+            img.onerror = error => reject(error);
+
+            img.src = event.target.result;
+
+        };
+
+        reader.onerror = error => reject(error);
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+/* =========================================================
+   SUBIR IMAGEN A SUPABASE
+========================================================= */
+
+async function uploadImage(fileBlob) {
+
+    if (!fileBlob) {
         throw new Error(
             "No se seleccionó ninguna imagen."
         );
     }
 
 
-    if (
-        file.type !== "image/webp" &&
-        !file.name.toLowerCase().endsWith(".webp")
-    ) {
-
-        throw new Error(
-            "La imagen debe estar en formato WebP."
-        );
-
-    }
-
-
-    const extension = "webp";
-
-
     const fileName =
-        `${crypto.randomUUID()}.${extension}`;
+        `${crypto.randomUUID()}.webp`;
 
 
     const filePath =
@@ -1650,7 +1616,7 @@ async function uploadImage(file) {
 
 
     console.log(
-        "Subiendo imagen:",
+        "Subiendo imagen WebP procesada:",
         filePath
     );
 
@@ -1662,7 +1628,7 @@ async function uploadImage(file) {
         .from("product-images")
         .upload(
             filePath,
-            file,
+            fileBlob,
             {
                 cacheControl: "3600",
                 upsert: false,
@@ -1739,7 +1705,7 @@ function setupImageUpload() {
 }
 
 
-function handleImageSelection(event) {
+async function handleImageSelection(event) {
 
     const file =
         event.target.files?.[0];
@@ -1750,13 +1716,10 @@ function handleImageSelection(event) {
     }
 
 
-    if (
-        file.type !== "image/webp" &&
-        !file.name.toLowerCase().endsWith(".webp")
-    ) {
+    if (!file.type.startsWith("image/")) {
 
         showFormMessage(
-            "Solo se permiten imágenes WebP.",
+            "El archivo seleccionado no es una imagen válida.",
             "error"
         );
 
@@ -1766,32 +1729,53 @@ function handleImageSelection(event) {
     }
 
 
-    selectedImageFile =
-        file;
+    try {
+
+        uploadName.textContent = "Procesando imagen a WebP...";
+
+        imagePreview.innerHTML = `
+            <div class="image-preview-placeholder">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Procesando e imágen...</span>
+            </div>
+        `;
 
 
-    uploadName.textContent =
-        file.name;
+        // Convertir cualquier formato (PNG, JPG, etc.) a WebP
+        const webpBlob = await convertImageToWebP(file, 0.85);
 
 
-    const reader =
-        new FileReader();
+        selectedImageFile = webpBlob;
 
 
-    reader.onload =
-        event => {
+        const formattedName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
 
-            imagePreview.innerHTML = `
-                <img
-                    src="${event.target.result}"
-                    alt="Vista previa"
-                >
-            `;
-
-        };
+        uploadName.textContent = `${formattedName}.webp (Convertida con éxito)`;
 
 
-    reader.readAsDataURL(file);
+        // Vista previa desde el objeto WebP generado
+        const previewUrl = URL.createObjectURL(webpBlob);
+
+        imagePreview.innerHTML = `
+            <img
+                src="${previewUrl}"
+                alt="Vista previa"
+            >
+        `;
+
+
+    } catch (error) {
+
+        console.error("Error convirtiendo la imagen:", error);
+
+        showFormMessage(
+            "Error al procesar la imagen seleccionada.",
+            "error"
+        );
+
+        showImagePlaceholder();
+
+    }
 
 }
 
@@ -1826,7 +1810,7 @@ function resetProductForm() {
 
 
     uploadName.textContent =
-        "Solo imágenes .webp";
+        "Soporta JPG, PNG, WebP (se convertirá a WebP automáticamente)";
 
 
     productFormMessage.textContent = "";
@@ -1870,7 +1854,7 @@ function showImagePlaceholder() {
             <i class="fa-regular fa-image"></i>
 
             <span>
-                Selecciona una imagen WebP
+                Selecciona una imagen
             </span>
 
         </div>
