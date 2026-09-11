@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -16,7 +17,7 @@
 
     <link
         rel="stylesheet"
-        href="./css/admin.css?v=1003"
+        href="./css/admin.css?v=2001"
     >
 </head>
 
@@ -186,6 +187,7 @@
                 <a
                     href="index.html"
                     target="_blank"
+                    rel="noopener"
                     class="admin-sidebar-link"
                 >
                     <i class="fa-solid fa-store"></i>
@@ -723,6 +725,370 @@
                             </div>
 
 
+                            <!-- =================================
+                                 CARACTERÍSTICAS IPHONE
+                            ================================== -->
+
+                            <div
+                                class="iphone-admin-section admin-form-full"
+                                id="iphoneAdminSection"
+                                hidden
+                            >
+
+                                <div class="iphone-admin-header">
+
+                                    <div class="iphone-admin-title">
+
+                                        <div class="iphone-admin-icon">
+                                            <i class="fa-brands fa-apple"></i>
+                                        </div>
+
+                                        <div>
+                                            <h2>
+                                                Características del iPhone
+                                            </h2>
+
+                                            <p>
+                                                Información específica que aparecerá en los detalles del producto.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="iphone-admin-grid">
+
+
+                                    <!-- SIM -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneSimFisica">
+                                            SIM física
+                                        </label>
+
+                                        <select id="iphoneSimFisica">
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- LIBRE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneLibreFabrica">
+                                            Libre de fábrica
+                                        </label>
+
+                                        <select id="iphoneLibreFabrica">
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- COLOR -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneColor">
+                                            Color
+                                        </label>
+
+                                        <select id="iphoneColor">
+
+                                            <option value="">
+                                                Seleccionar color
+                                            </option>
+
+                                            <option value="Natural">
+                                                Natural
+                                            </option>
+
+                                            <option value="Titanio negro">
+                                                Titanio negro
+                                            </option>
+
+                                            <option value="Titanio blanco">
+                                                Titanio blanco
+                                            </option>
+
+                                            <option value="Titanio azul">
+                                                Titanio azul
+                                            </option>
+
+                                            <option value="Negro">
+                                                Negro
+                                            </option>
+
+                                            <option value="Blanco">
+                                                Blanco
+                                            </option>
+
+                                            <option value="Plata">
+                                                Plata
+                                            </option>
+
+                                            <option value="Oro">
+                                                Oro
+                                            </option>
+
+                                            <option value="Rosa">
+                                                Rosa
+                                            </option>
+
+                                            <option value="Rojo">
+                                                Rojo
+                                            </option>
+
+                                            <option value="Azul">
+                                                Azul
+                                            </option>
+
+                                            <option value="Verde">
+                                                Verde
+                                            </option>
+
+                                            <option value="Morado">
+                                                Morado
+                                            </option>
+
+                                            <option value="Otro">
+                                                Otro
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- OTRO COLOR -->
+
+                                    <div
+                                        class="admin-form-group"
+                                        id="iphoneCustomColorGroup"
+                                        hidden
+                                    >
+
+                                        <label for="iphoneCustomColor">
+                                            Especificar color
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="iphoneCustomColor"
+                                            placeholder="Ej. Azul Sierra"
+                                            maxlength="50"
+                                        >
+
+                                    </div>
+
+
+                                    <!-- ALMACENAMIENTO -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneStorage">
+                                            Almacenamiento
+                                        </label>
+
+                                        <select id="iphoneStorage">
+
+                                            <option value="">
+                                                Seleccionar almacenamiento
+                                            </option>
+
+                                            <option value="64 GB">
+                                                64 GB
+                                            </option>
+
+                                            <option value="128 GB">
+                                                128 GB
+                                            </option>
+
+                                            <option value="256 GB">
+                                                256 GB
+                                            </option>
+
+                                            <option value="512 GB">
+                                                512 GB
+                                            </option>
+
+                                            <option value="1 TB">
+                                                1 TB
+                                            </option>
+
+                                            <option value="2 TB">
+                                                2 TB
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- BATERÍA -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneBattery">
+                                            Salud de batería
+                                        </label>
+
+                                        <div class="admin-number-suffix">
+
+                                            <input
+                                                type="number"
+                                                id="iphoneBattery"
+                                                min="0"
+                                                max="100"
+                                                step="1"
+                                                placeholder="Ej. 97"
+                                            >
+
+                                            <span>%</span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- FACE ID -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneFaceId">
+                                            Face ID
+                                        </label>
+
+                                        <select id="iphoneFaceId">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- TRUE TONE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneTrueTone">
+                                            True Tone
+                                        </label>
+
+                                        <select id="iphoneTrueTone">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- GARANTÍA -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneWarranty">
+                                            Garantía
+                                        </label>
+
+                                        <select id="iphoneWarranty">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- CABLE -->
+
+                                    <div class="admin-form-group">
+
+                                        <label for="iphoneCable">
+                                            Cable
+                                        </label>
+
+                                        <select id="iphoneCable">
+
+                                            <option value="">
+                                                Seleccionar
+                                            </option>
+
+                                            <option value="true">
+                                                Sí
+                                            </option>
+
+                                            <option value="false">
+                                                No
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                             <!-- IMAGEN -->
 
                             <div class="admin-form-group admin-form-full">
@@ -849,7 +1215,7 @@
          ADMIN JS
     ========================== -->
 
-    <script src="./js/admin.js?v=1003"></script>
+    <script src="./js/admin.js?v=2001"></script>
 
 </body>
 </html>
