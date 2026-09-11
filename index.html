@@ -88,18 +88,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- CSS principal -->
-    <link rel="stylesheet" href="css/styles.css?v=2001">
+    <link rel="stylesheet" href="css/styles.css?v=2002">
 
 
     <!-- =====================================================
-         ESTILOS CARACTERÍSTICAS IPHONE
+         CARACTERÍSTICAS IPHONE
     ====================================================== -->
 
     <style>
 
         .iphone-specs {
-            margin-top: 24px;
-            padding-top: 22px;
+            margin-top: 22px;
+            padding-top: 20px;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
 
@@ -110,103 +110,190 @@
         .iphone-specs-title {
             display: flex;
             align-items: center;
-            gap: 9px;
-            margin-bottom: 15px;
-            font-size: 15px;
-            font-weight: 700;
+            gap: 8px;
+            margin-bottom: 13px;
             color: #171717;
+            font-size: 14px;
+            font-weight: 700;
         }
 
         .iphone-specs-title i {
             font-size: 14px;
-            opacity: 0.75;
+            color: #111;
         }
 
         .iphone-specs-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 9px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
+
+        /*
+         * PILLS
+         */
 
         .iphone-spec {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 9px;
-            min-height: 42px;
-            padding: 9px 12px;
-            border-radius: 12px;
-            background: #f7f7f7;
-            border: 1px solid rgba(0, 0, 0, 0.055);
-            font-size: 13px;
-            line-height: 1.3;
+            gap: 7px;
+
+            min-height: 34px;
+            padding: 7px 11px;
+
+            border-radius: 999px;
+
+            background: #f6f6f6;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+
+            color: #202020;
+            font-size: 12px;
+            font-weight: 600;
+
+            line-height: 1;
+            white-space: nowrap;
+
+            transition:
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
         }
+
+        .iphone-spec:hover {
+            background: #eeeeee;
+            border-color: rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /*
+         * ICONO
+         */
 
         .iphone-spec-icon {
-            width: 25px;
-            height: 25px;
-            min-width: 25px;
-            display: flex;
+            width: 18px;
+            height: 18px;
+
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+
+            flex-shrink: 0;
+
             border-radius: 50%;
-            background: #ffffff;
-            font-size: 11px;
+
+            font-size: 9px;
+            font-weight: 800;
         }
+
+        /*
+         * SÍ
+         */
 
         .iphone-spec-icon.yes {
-            color: #188038;
+            background: #e8f7ed;
+            color: #16803c;
         }
+
+        /*
+         * NO
+         */
 
         .iphone-spec-icon.no {
-            color: #b42318;
+            background: #fcebea;
+            color: #c62828;
         }
+
+        /*
+         * INFORMACIÓN
+         */
 
         .iphone-spec-icon.info {
-            color: #555555;
+            background: #ededed;
+            color: #555;
         }
 
+        /*
+         * TEXTO
+         */
+
         .iphone-spec-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             min-width: 0;
         }
 
         .iphone-spec-label {
+            color: #6b6b6b;
             font-size: 11px;
-            color: #777777;
+            font-weight: 500;
         }
 
         .iphone-spec-value {
-            font-weight: 600;
-            color: #1b1b1b;
-            overflow-wrap: anywhere;
+            color: #171717;
+            font-size: 12px;
+            font-weight: 700;
         }
+
+        .iphone-spec-label::after {
+            content: ":";
+        }
+
+        /*
+         * ESTADO VACÍO
+         */
 
         .iphone-spec-empty {
-            padding: 13px 15px;
+            width: 100%;
+            padding: 11px 13px;
+
             border-radius: 12px;
+
             background: #f7f7f7;
-            color: #777777;
-            font-size: 13px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+
+            color: #777;
+            font-size: 12px;
         }
 
+
+        /*
+         * MÓVIL
+         */
 
         @media (max-width: 600px) {
 
             .iphone-specs {
-                margin-top: 20px;
-                padding-top: 18px;
+                margin-top: 19px;
+                padding-top: 17px;
+            }
+
+            .iphone-specs-title {
+                margin-bottom: 11px;
+                font-size: 13px;
             }
 
             .iphone-specs-grid {
-                grid-template-columns: 1fr;
+                gap: 7px;
             }
 
             .iphone-spec {
-                min-height: 40px;
+                min-height: 32px;
+                padding: 6px 9px;
+                font-size: 11px;
             }
 
+            .iphone-spec-label {
+                font-size: 10px;
+            }
+
+            .iphone-spec-value {
+                font-size: 11px;
+            }
+
+            .iphone-spec-icon {
+                width: 17px;
+                height: 17px;
+            }
         }
 
     </style>
@@ -299,7 +386,7 @@
         </div>
 
 
-        <!-- Buscador -->
+        <!-- BUSCADOR -->
 
         <div class="search-panel" id="searchPanel">
 
@@ -331,7 +418,7 @@
         </div>
 
 
-        <!-- Menú móvil -->
+        <!-- MENÚ MÓVIL -->
 
         <div class="mobile-nav" id="mobileNav">
 
@@ -1005,6 +1092,7 @@
             class="product-modal"
             role="dialog"
             aria-modal="true"
+            aria-labelledby="modalName"
         >
 
             <button
@@ -1045,9 +1133,9 @@
                 ></p>
 
 
-                <!-- =================================================
+                <!-- =========================
                      CARACTERÍSTICAS IPHONE
-                ================================================== -->
+                ========================== -->
 
                 <section
                     class="iphone-specs"
@@ -1123,7 +1211,8 @@
 
 
 
-    <script src="js/script.js?v=2002"></script>
+    <!-- JavaScript -->
+    <script src="js/script.js?v=2003"></script>
 
 </body>
 </html>
