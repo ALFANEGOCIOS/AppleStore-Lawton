@@ -86,6 +86,15 @@ const modalPrice =
 const modalStatus =
     document.getElementById("modalStatus");
 
+const modalAddButton =
+    document.getElementById("modalAddButton");
+
+const iphoneSpecs =
+    document.getElementById("iphoneSpecs");
+
+const iphoneSpecsGrid =
+    document.getElementById("iphoneSpecsGrid");
+
 const toast =
     document.getElementById("toast");
 
@@ -107,6 +116,10 @@ function escapeHtml(value = "") {
         .replaceAll("'", "&#039;");
 }
 
+
+/* =========================================================
+   NORMALIZAR PRODUCTO
+   ========================================================= */
 
 function normalizeProduct(product) {
 
@@ -140,15 +153,82 @@ function normalizeProduct(product) {
         image_url:
             product.image_url ||
             product.image ||
-            ""
+            "",
+
+
+        /* =================================================
+           CARACTERÍSTICAS ESPECÍFICAS DEL IPHONE
+        ================================================== */
+
+        sim_fisica:
+            product.sim_fisica === null ||
+            typeof product.sim_fisica === "undefined"
+                ? null
+                : Boolean(product.sim_fisica),
+
+        libre_fabrica:
+            product.libre_fabrica === null ||
+            typeof product.libre_fabrica === "undefined"
+                ? null
+                : Boolean(product.libre_fabrica),
+
+        color:
+            product.color !== null &&
+            typeof product.color !== "undefined" &&
+            String(product.color).trim() !== ""
+                ? String(product.color).trim()
+                : null,
+
+        almacenamiento:
+            product.almacenamiento !== null &&
+            typeof product.almacenamiento !== "undefined" &&
+            String(product.almacenamiento).trim() !== ""
+                ? String(product.almacenamiento).trim()
+                : null,
+
+        bateria:
+            product.bateria === null ||
+            typeof product.bateria === "undefined" ||
+            product.bateria === ""
+                ? null
+                : Number(product.bateria),
+
+        face_id:
+            product.face_id === null ||
+            typeof product.face_id === "undefined"
+                ? null
+                : Boolean(product.face_id),
+
+        true_tone:
+            product.true_tone === null ||
+            typeof product.true_tone === "undefined"
+                ? null
+                : Boolean(product.true_tone),
+
+        garantia:
+            product.garantia === null ||
+            typeof product.garantia === "undefined"
+                ? null
+                : Boolean(product.garantia),
+
+        cable:
+            product.cable === null ||
+            typeof product.cable === "undefined"
+                ? null
+                : Boolean(product.cable)
 
     };
 }
 
 
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
 function formatPrice(value) {
 
-    const number = Number(value) || 0;
+    const number =
+        Number(value) || 0;
 
     return new Intl.NumberFormat(
         "en-US",
@@ -161,6 +241,10 @@ function formatPrice(value) {
     ).format(number);
 }
 
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
 
 function getImageUrl(product) {
 
@@ -175,19 +259,30 @@ function getImageUrl(product) {
 }
 
 
+/* =========================================================
+   TOAST
+   ========================================================= */
+
 function showToast(message) {
 
     if (!toast) return;
 
-    toastMessage.textContent = message;
+    toastMessage.textContent =
+        message;
 
     toast.classList.add("active");
 
-    clearTimeout(showToast.timeout);
+    clearTimeout(
+        showToast.timeout
+    );
 
     showToast.timeout =
         setTimeout(() => {
-            toast.classList.remove("active");
+
+            toast.classList.remove(
+                "active"
+            );
+
         }, 2500);
 }
 
@@ -217,6 +312,7 @@ async function loadProducts() {
                         ascending: false
                     }
                 );
+
 
         /*
          * Algunos proyectos pueden no tener created_at.
@@ -264,6 +360,7 @@ async function loadProducts() {
 
         productsGrid.innerHTML = `
             <div class="loading-state">
+
                 <i
                     class="fa-solid fa-triangle-exclamation"
                     style="font-size:28px;color:#c9a45c"
@@ -276,6 +373,7 @@ async function loadProducts() {
                 <small>
                     Revisa la conexión con Supabase.
                 </small>
+
             </div>
         `;
     }
@@ -308,15 +406,21 @@ function renderProducts() {
 }
 
 
+/* =========================================================
+   TARJETA PRODUCTO
+   ========================================================= */
+
 function createProductCard(product) {
 
     const image =
         getImageUrl(product);
 
+
     const isUsed =
         String(product.condition)
             .toLowerCase()
             .includes("usad");
+
 
     const statusClass =
         isUsed ? "used" : "";
@@ -324,6 +428,7 @@ function createProductCard(product) {
 
     const stock =
         Number(product.stock) || 0;
+
 
     const outOfStock =
         stock <= 0;
@@ -407,7 +512,367 @@ function createProductCard(product) {
             </div>
 
         </article>
+
     `;
+}
+
+
+/* =========================================================
+   AYUDAS PARA CARACTERÍSTICAS IPHONE
+   ========================================================= */
+
+function isIPhone(product) {
+
+    return String(
+        product.category || ""
+    )
+        .trim()
+        .toLowerCase() === "iphone";
+}
+
+
+/*
+ * Convierte boolean:
+ *
+ * true  -> Sí
+ * false -> No
+ * null  -> No especificado
+ */
+
+function getBooleanSpec(
+    label,
+    value,
+    icon
+) {
+
+    let iconClass =
+        "info";
+
+    let iconSymbol =
+        "•";
+
+    let displayValue =
+        "No especificado";
+
+
+    if (value === true) {
+
+        iconClass =
+            "yes";
+
+        iconSymbol =
+            "✓";
+
+        displayValue =
+            "Sí";
+
+    } else if (value === false) {
+
+        iconClass =
+            "no";
+
+        iconSymbol =
+            "✕";
+
+        displayValue =
+            "No";
+    }
+
+
+    return {
+
+        label,
+
+        value:
+            displayValue,
+
+        icon,
+
+        iconClass,
+
+        iconSymbol
+    };
+}
+
+
+/*
+ * Características de texto.
+ */
+
+function getTextSpec(
+    label,
+    value,
+    icon
+) {
+
+    if (
+        value === null ||
+        typeof value === "undefined" ||
+        String(value).trim() === ""
+    ) {
+
+        return null;
+    }
+
+
+    return {
+
+        label,
+
+        value:
+            String(value),
+
+        icon,
+
+        iconClass:
+            "info",
+
+        iconSymbol:
+            "•"
+    };
+}
+
+
+/*
+ * Batería.
+ */
+
+function getBatterySpec(
+    value
+) {
+
+    if (
+        value === null ||
+        typeof value === "undefined" ||
+        Number.isNaN(Number(value))
+    ) {
+
+        return null;
+    }
+
+
+    return {
+
+        label:
+            "Salud de batería",
+
+        value:
+            `${Number(value)}%`,
+
+        icon:
+            "fa-solid fa-battery-three-quarters",
+
+        iconClass:
+            "info",
+
+        iconSymbol:
+            ""
+    };
+}
+
+
+/* =========================================================
+   RENDER CARACTERÍSTICAS IPHONE
+   ========================================================= */
+
+function renderIPhoneSpecs(product) {
+
+    if (!iphoneSpecs || !iphoneSpecsGrid) {
+        return;
+    }
+
+
+    /*
+     * Si NO es iPhone:
+     * ocultamos completamente la sección.
+     */
+
+    if (!isIPhone(product)) {
+
+        iphoneSpecs.hidden = true;
+
+        iphoneSpecsGrid.innerHTML = "";
+
+        return;
+    }
+
+
+    const specs = [];
+
+
+    /* SIM física */
+
+    specs.push(
+        getBooleanSpec(
+            "SIM física",
+            product.sim_fisica,
+            "fa-solid fa-sim-card"
+        )
+    );
+
+
+    /* Libre de fábrica */
+
+    specs.push(
+        getBooleanSpec(
+            "Libre de fábrica",
+            product.libre_fabrica,
+            "fa-solid fa-unlock"
+        )
+    );
+
+
+    /* Color */
+
+    const colorSpec =
+        getTextSpec(
+            "Color",
+            product.color,
+            "fa-solid fa-palette"
+        );
+
+    if (colorSpec) {
+        specs.push(colorSpec);
+    }
+
+
+    /* Almacenamiento */
+
+    const storageSpec =
+        getTextSpec(
+            "Almacenamiento",
+            product.almacenamiento,
+            "fa-solid fa-hard-drive"
+        );
+
+    if (storageSpec) {
+        specs.push(storageSpec);
+    }
+
+
+    /* Batería */
+
+    const batterySpec =
+        getBatterySpec(
+            product.bateria
+        );
+
+    if (batterySpec) {
+        specs.push(batterySpec);
+    }
+
+
+    /* Face ID */
+
+    specs.push(
+        getBooleanSpec(
+            "Face ID",
+            product.face_id,
+            "fa-solid fa-face-smile"
+        )
+    );
+
+
+    /* True Tone */
+
+    specs.push(
+        getBooleanSpec(
+            "True Tone",
+            product.true_tone,
+            "fa-solid fa-sun"
+        )
+    );
+
+
+    /* Garantía */
+
+    specs.push(
+        getBooleanSpec(
+            "Garantía",
+            product.garantia,
+            "fa-solid fa-shield-halved"
+        )
+    );
+
+
+    /* Cable */
+
+    specs.push(
+        getBooleanSpec(
+            "Cable incluido",
+            product.cable,
+            "fa-solid fa-plug"
+        )
+    );
+
+
+    /*
+     * Eliminamos valores nulos.
+     *
+     * Las características booleanas nunca son null
+     * porque mostramos "No especificado".
+     */
+
+    const validSpecs =
+        specs.filter(Boolean);
+
+
+    if (!validSpecs.length) {
+
+        iphoneSpecsGrid.innerHTML = `
+            <div class="iphone-spec-empty">
+                Las características de este iPhone
+                todavía no han sido especificadas.
+            </div>
+        `;
+
+    } else {
+
+        iphoneSpecsGrid.innerHTML =
+            validSpecs
+                .map(spec => {
+
+                    return `
+
+                        <div class="iphone-spec">
+
+                            <span
+                                class="iphone-spec-icon ${spec.iconClass}"
+                            >
+
+                                ${
+                                    spec.iconSymbol
+                                        ? escapeHtml(
+                                            spec.iconSymbol
+                                        )
+                                        : `<i class="${escapeHtml(spec.icon)}"></i>`
+                                }
+
+                            </span>
+
+
+                            <span class="iphone-spec-text">
+
+                                <span class="iphone-spec-label">
+                                    ${escapeHtml(spec.label)}
+                                </span>
+
+                                <span class="iphone-spec-value">
+                                    ${escapeHtml(spec.value)}
+                                </span>
+
+                            </span>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
+    }
+
+
+    iphoneSpecs.hidden = false;
 }
 
 
@@ -417,17 +882,24 @@ function createProductCard(product) {
 
 function openProductModal(product) {
 
-    selectedProduct = product;
+    selectedProduct =
+        product;
 
 
     modalImage.innerHTML = `
+
         <img
-            src="${escapeHtml(getImageUrl(product))}"
-            alt="${escapeHtml(product.name)}"
+            src="${escapeHtml(
+                getImageUrl(product)
+            )}"
+            alt="${escapeHtml(
+                product.name
+            )}"
             onerror="
                 this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80'
             "
         >
+
     `;
 
 
@@ -444,7 +916,9 @@ function openProductModal(product) {
 
 
     modalPrice.textContent =
-        formatPrice(product.price);
+        formatPrice(
+            product.price
+        );
 
 
     modalStatus.textContent =
@@ -462,19 +936,42 @@ function openProductModal(product) {
         );
 
 
-    productModal.classList.add("active");
+    /*
+     * NUEVO:
+     * Renderizar características si es iPhone.
+     */
 
-    document.body.classList.add("no-scroll");
+    renderIPhoneSpecs(
+        product
+    );
+
+
+    productModal.classList.add(
+        "active"
+    );
+
+    document.body.classList.add(
+        "no-scroll"
+    );
 }
 
 
+/* =========================================================
+   CERRAR MODAL
+   ========================================================= */
+
 function closeProductModal() {
 
-    productModal.classList.remove("active");
+    productModal.classList.remove(
+        "active"
+    );
 
-    document.body.classList.remove("no-scroll");
+    document.body.classList.remove(
+        "no-scroll"
+    );
 
-    selectedProduct = null;
+    selectedProduct =
+        null;
 }
 
 
@@ -507,18 +1004,34 @@ function applyFilters() {
 
 
             const searchableText = [
+
                 product.name,
+
                 product.category,
+
                 product.description,
-                product.condition
+
+                product.condition,
+
+                product.color,
+
+                product.almacenamiento
+
             ]
+                .filter(
+                    value =>
+                        value !== null &&
+                        typeof value !== "undefined"
+                )
                 .join(" ")
                 .toLowerCase();
 
 
             const matchesSearch =
                 !query ||
-                searchableText.includes(query);
+                searchableText.includes(
+                    query
+                );
 
 
             return (
@@ -537,7 +1050,9 @@ function selectCategory(category) {
     categoryFilter.value =
         category;
 
+
     applyFilters();
+
 
     document
         .getElementById("productos")
@@ -577,12 +1092,15 @@ function loadCart() {
 
 
         if (!Array.isArray(cart)) {
+
             cart = [];
+
         }
 
     } catch {
 
         cart = [];
+
     }
 
 
@@ -635,18 +1153,24 @@ function addToCart(product) {
 
         cart.push({
 
-            id: product.id,
+            id:
+                product.id,
 
-            name: product.name,
+            name:
+                product.name,
 
-            price: product.price,
+            price:
+                product.price,
 
             image_url:
                 product.image_url,
 
-            quantity: 1,
+            quantity:
+                1,
 
-            stock: stock
+            stock:
+                stock
+
         });
     }
 
@@ -654,6 +1178,7 @@ function addToCart(product) {
     saveCart();
 
     renderCart();
+
 
     showToast(
         "Producto añadido a tu bolsa."
@@ -677,7 +1202,10 @@ function removeFromCart(id) {
 }
 
 
-function changeQuantity(id, amount) {
+function changeQuantity(
+    id,
+    amount
+) {
 
     const item =
         cart.find(
@@ -791,85 +1319,103 @@ function renderCart() {
 
 
     cartItems.innerHTML =
-        cart.map(item => `
+        cart
+            .map(
+                item => `
 
-            <div
-                class="cart-item"
-                data-cart-id="${escapeHtml(item.id)}"
-            >
-
-                <div class="cart-item-image">
-
-                    <img
-                        src="${escapeHtml(
-                            item.image_url ||
-                            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80"
+                    <div
+                        class="cart-item"
+                        data-cart-id="${escapeHtml(
+                            item.id
                         )}"
-                        alt="${escapeHtml(item.name)}"
                     >
 
-                </div>
+                        <div class="cart-item-image">
 
-
-                <div class="cart-item-info">
-
-                    <span class="cart-item-name">
-                        ${escapeHtml(item.name)}
-                    </span>
-
-
-                    <div class="cart-item-price">
-                        ${formatPrice(item.price)}
-                    </div>
-
-
-                    <div class="cart-item-controls">
-
-                        <div class="cart-quantity">
-
-                            <button
-                                class="cart-quantity-button"
-                                data-action="decrease"
-                                data-id="${escapeHtml(item.id)}"
-                                type="button"
+                            <img
+                                src="${escapeHtml(
+                                    item.image_url ||
+                                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80"
+                                )}"
+                                alt="${escapeHtml(
+                                    item.name
+                                )}"
                             >
-                                −
-                            </button>
-
-
-                            <span class="cart-quantity-value">
-                                ${item.quantity}
-                            </span>
-
-
-                            <button
-                                class="cart-quantity-button"
-                                data-action="increase"
-                                data-id="${escapeHtml(item.id)}"
-                                type="button"
-                            >
-                                +
-                            </button>
 
                         </div>
 
 
-                        <button
-                            class="cart-remove"
-                            data-action="remove"
-                            data-id="${escapeHtml(item.id)}"
-                            type="button"
-                        >
-                            Eliminar
-                        </button>
+                        <div class="cart-item-info">
+
+                            <span class="cart-item-name">
+                                ${escapeHtml(
+                                    item.name
+                                )}
+                            </span>
+
+
+                            <div class="cart-item-price">
+                                ${formatPrice(
+                                    item.price
+                                )}
+                            </div>
+
+
+                            <div class="cart-item-controls">
+
+                                <div class="cart-quantity">
+
+                                    <button
+                                        class="cart-quantity-button"
+                                        data-action="decrease"
+                                        data-id="${escapeHtml(
+                                            item.id
+                                        )}"
+                                        type="button"
+                                    >
+                                        −
+                                    </button>
+
+
+                                    <span class="cart-quantity-value">
+                                        ${item.quantity}
+                                    </span>
+
+
+                                    <button
+                                        class="cart-quantity-button"
+                                        data-action="increase"
+                                        data-id="${escapeHtml(
+                                            item.id
+                                        )}"
+                                        type="button"
+                                    >
+                                        +
+                                    </button>
+
+                                </div>
+
+
+                                <button
+                                    class="cart-remove"
+                                    data-action="remove"
+                                    data-id="${escapeHtml(
+                                        item.id
+                                    )}"
+                                    type="button"
+                                >
+                                    Eliminar
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                </div>
-
-            </div>
-
-        `).join("");
+                `
+            )
+            .join("");
 }
 
 
@@ -879,21 +1425,33 @@ function renderCart() {
 
 function openCart() {
 
-    cartDrawer.classList.add("active");
+    cartDrawer.classList.add(
+        "active"
+    );
 
-    cartOverlay.classList.add("active");
+    cartOverlay.classList.add(
+        "active"
+    );
 
-    document.body.classList.add("no-scroll");
+    document.body.classList.add(
+        "no-scroll"
+    );
 }
 
 
 function closeCart() {
 
-    cartDrawer.classList.remove("active");
+    cartDrawer.classList.remove(
+        "active"
+    );
 
-    cartOverlay.classList.remove("active");
+    cartOverlay.classList.remove(
+        "active"
+    );
 
-    document.body.classList.remove("no-scroll");
+    document.body.classList.remove(
+        "no-scroll"
+    );
 }
 
 
@@ -920,12 +1478,18 @@ function checkoutWhatsApp() {
     cart.forEach(item => {
 
         message +=
-            `• ${item.name} x${item.quantity} - ${formatPrice(item.price * item.quantity)}%0A`;
+            `• ${item.name} x${item.quantity} - ${formatPrice(
+                item.price *
+                item.quantity
+            )}%0A`;
+
     });
 
 
     message +=
-        `%0ATotal: ${formatPrice(getCartTotal())}`;
+        `%0ATotal: ${formatPrice(
+            getCartTotal()
+        )}`;
 
 
     const url =
@@ -971,7 +1535,9 @@ productsGrid.addEventListener(
 
         if (product) {
 
-            openProductModal(product);
+            openProductModal(
+                product
+            );
         }
     }
 );
@@ -1002,21 +1568,31 @@ cartItems.addEventListener(
             button.dataset.action;
 
 
-        if (action === "increase") {
+        if (
+            action === "increase"
+        ) {
 
-            changeQuantity(id, 1);
+            changeQuantity(
+                id,
+                1
+            );
 
         } else if (
             action === "decrease"
         ) {
 
-            changeQuantity(id, -1);
+            changeQuantity(
+                id,
+                -1
+            );
 
         } else if (
             action === "remove"
         ) {
 
-            removeFromCart(id);
+            removeFromCart(
+                id
+            );
         }
     }
 );
@@ -1060,6 +1636,7 @@ searchToggle.addEventListener(
             "active"
         );
 
+
         if (
             searchPanel.classList.contains(
                 "active"
@@ -1100,6 +1677,7 @@ menuToggle.addEventListener(
         mobileNav.classList.toggle(
             "active"
         );
+
 
         const icon =
             menuToggle.querySelector(
@@ -1163,7 +1741,9 @@ categoryFilter.addEventListener(
 
 
 document
-    .getElementById("clearFilters")
+    .getElementById(
+        "clearFilters"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1202,7 +1782,9 @@ document
    ========================================================= */
 
 document
-    .getElementById("openCart")
+    .getElementById(
+        "openCart"
+    )
     .addEventListener(
         "click",
         openCart
@@ -1210,7 +1792,9 @@ document
 
 
 document
-    .getElementById("closeCart")
+    .getElementById(
+        "closeCart"
+    )
     .addEventListener(
         "click",
         closeCart
@@ -1224,7 +1808,9 @@ cartOverlay.addEventListener(
 
 
 document
-    .getElementById("checkoutButton")
+    .getElementById(
+        "checkoutButton"
+    )
     .addEventListener(
         "click",
         checkoutWhatsApp
@@ -1260,29 +1846,25 @@ productModal.addEventListener(
 );
 
 
-document
-    .getElementById(
-        "modalAddButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+modalAddButton.addEventListener(
+    "click",
+    () => {
 
-            if (!selectedProduct) {
-                return;
-            }
-
-
-            addToCart(
-                selectedProduct
-            );
-
-
-            closeProductModal();
-
-            openCart();
+        if (!selectedProduct) {
+            return;
         }
-    );
+
+
+        addToCart(
+            selectedProduct
+        );
+
+
+        closeProductModal();
+
+        openCart();
+    }
+);
 
 
 /* =========================================================
